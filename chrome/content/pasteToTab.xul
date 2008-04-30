@@ -12,11 +12,10 @@
       <menuitem
         id="paste-to-tab-and-go"
         label="&PasteToTab.menuitem.label;"
-        onmouseover="PasteToTab.setStatus(PasteToTab.clipboard);"
-        onmouseout="PasteToTab.setStatus('');"
+        onmouseover="PasteToTab.mouseOver(this);"
+        onmouseout="PasteToTab.mouseOut(this);"
         oncommand="PasteToTab.andGo(PasteToTab.tabbrowser.mContextTab);" />
     </popup>
   </popupset>
 
 </overlay>
-
