@@ -8,82 +8,25 @@ var PasteToTab = {
     return document.getElementById("paste-to-tab-and-go");
   },
 
-  get statusbar() {
-    return document.getElementById("status-bar");
-  },
-
-  get statusbarText() {
-    var status = document.getElementById("sb-status-bar-status-label") || // Songbird
-                 document.getElementById("statusbar-display");
-    return status;
-  },
-
-  // Songbird doesn't have readFromClipboard() function
-  readFromClipboard: function pasteToTab_readFromClipboard() {
-    var Cc = Components.classes; var Ci = Components.interfaces;
-    var url;
-    try {
-      var clipboard = Cc['@mozilla.org/widget/clipboard;1'].
-                      getService(Ci.nsIClipboard);
-      var trans = Cc['@mozilla.org/widget/transferable;1'].
-                  createInstance(Ci.nsITransferable);
-      trans.addDataFlavor("text/unicode");
-      if (clipboard.supportsSelectionClipboard()) {
-        clipboard.getData(trans, clipboard.kSelectionClipboard);
-      } else {
-        clipboard.getData(trans, clipboard.kGlobalClipboard);
-      }
-      var data = {};
-      var dataLen = {};
-      trans.getTransferData("text/unicode", data, dataLen);
-      if (data) {
-        data = data.value.QueryInterface(Ci.nsISupportsString);
-        url = data.data.substring(0, dataLen.value / 2);
-      }
-    } catch (ex) {
-      return "";
-    }
-    return url;
+  get clipboard() {
+    return readFromClipboard() ? readFromClipboard() : "";
   },
 
   andGo: function pasteToTab_andGo(aTab) {
-    var string = this.readFromClipboard();
-    if (!string) return;
+    if (!this.clipboard) return;
     if (aTab.localName == "tabs") {
-      this.tabbrowser.loadOneTab(string, null, null, null, null, true);
+      this.tabbrowser.loadOneTab(this.clipboard, null, null, null, null, true);
     } else {
-      aTab.linkedBrowser.loadURI(string, null, null, true);
+      aTab.linkedBrowser.loadURI(this.clipboard, null, null, true);
     }
   },
 
-  mouseOver: function pasteToTab_mouseOver(aNode) {
-    var text = this.readFromClipboard();
-    if (this.statusbar.hidden) {
-      aNode.setAttribute("tooltiptext", text);
-    } else {
-      if (this.statusbarText.localName == "statusbarpanel") {
-        this.statusbarText.label = text;
-      } else { // Songbird
-        this.statusbarText.desc.value = text;
-      }
-    }
-  },
-
-  mouseOut: function pasteToTab_mouseOut(aNode) {
-    if (this.statusbar.hidden) {
-      aNode.removeAttribute("tooltiptext");
-    } else {
-      if (this.statusbarText.localName == "statusbarpanel") {
-        this.statusbarText.label = "";
-      } else { // Songbird
-        this.statusbarText.desc.value = "";
-      }
-    }
+  setStatus: function pasteToTab_setStatus(aString) {
+    document.getElementById("statusbar-display").label = aString;
   },
 
   initContext: function pasteToTab_initContext() {
-    this.menuitem.setAttribute("disabled", !this.readFromClipboard()
-                                           ? true : false);
+    this.menuitem.setAttribute("disabled", !this.clipboard ? true : false);
   },
 
   init: function pasteToTab_init() {
@@ -99,3 +42,4 @@ var PasteToTab = {
 window.addEventListener("load", function(e) {
   PasteToTab.init();
 }, false);
+
