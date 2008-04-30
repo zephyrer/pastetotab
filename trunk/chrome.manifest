@@ -3,3 +3,12 @@ locale    pastetotab     en-US     chrome/locale/en-US/
 
 overlay   chrome://browser/content/browser.xul          chrome://pastetotab/content/pasteToTab.xul
 
+# eMusic Remote
+overlay   chrome://emusic/content/startup.xul           chrome://pastetotab/content/pasteToTab.xul
+
+# Songbird
+overlay   chrome://songbird/content/feathers/basic-layouts/xul/mainplayer.xul           chrome://pastetotab/content/pasteToTab.xul
+
+# Songbird - Flyerfox feather
+overlay   chrome://flyerfox/content/mainplayer.xul      chrome://pastetotab/content/pasteToTab.xul
+
