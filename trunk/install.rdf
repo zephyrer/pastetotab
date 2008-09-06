@@ -9,7 +9,7 @@
     <em:version>0.2.1</em:version>
     <em:description>Paste a string to tab and load it.</em:description>
     <em:creator>LouCypher</em:creator>
-    <em:homepageURL>http://zoolcar9.lhukie.net/extensions/</em:homepageURL>
+    <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
 
     <!-- Firefox -->
     <em:targetApplication>
