@@ -48,7 +48,7 @@
         label="&PasteToTab.menuitem.label;"
         onmouseover="PasteToTab.mouseOver(this);"
         onmouseout="PasteToTab.mouseOut(this);"
-        oncommand="PasteToTab.andGo(PasteToTab.tabbrowser.mContextTab, event);"
+        oncommand="PasteToTab.loadURI(PasteToTab.tabbrowser.mContextTab, event);"
         onclick="PasteToTab.checkForMiddleClick(this, event); closeMenus(this);" />
     </popup>
   </popupset>

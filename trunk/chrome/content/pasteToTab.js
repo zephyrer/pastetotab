@@ -39,10 +39,6 @@ var PasteToTab = {
     return getBrowser();
   },
 
-  get menuitem() {
-    return document.getElementById("paste-to-tab-and-go");
-  },
-
   get statusbar() {
     return document.getElementById("status-bar");
   },
@@ -51,10 +47,11 @@ var PasteToTab = {
     return document.getElementById("statusbar-display");
   },
 
-  andGo: function pasteToTab_andGo(aTab, aEvent) {
+  loadURI: function pasteToTab_loadURI(aTab, aEvent) {
     var string = readFromClipboard();
     if (!string) return;
-    if (aEvent.ctrlKey || aEvent.metaKey) {
+    if (aEvent.ctrlKey || aEvent.metaKey ||
+        document.popupNode.localName == "tabs") {
       this.tabbrowser.loadOneTab(string, null, null, null, null, true);
     } else {
       aTab.linkedBrowser.loadURI(string, null, null, true);
@@ -86,24 +83,21 @@ var PasteToTab = {
     } else {
       this.statusbarText.label = "";
     }
-  },
-
-  initContext: function pasteToTab_initContext() {
-    this.menuitem.setAttribute("disabled", !readFromClipboard()
-                                           ? true : false);
-  },
-
-  init: function pasteToTab_init() {
-    var tabContext = document.getAnonymousElementByAttribute(
-                      this.tabbrowser, "anonid", "tabContextMenu");
-    tabContext.insertBefore(this.menuitem, tabContext.firstChild);
-    tabContext.addEventListener("popupshowing", function(e) {
-      PasteToTab.initContext();
-    }, false);
   }
 }
 
-window.addEventListener("load", function(e) {
-  PasteToTab.init();
+window.addEventListener("load", pasteToTab_init = function () {
+  var menuitem = document.getElementById("paste-to-tab-and-go");
+  var tabContextNewTab = document.getAnonymousElementByAttribute(
+                         PasteToTab.tabbrowser, "id", "context_newTab");
+  var tabContext = tabContextNewTab.parentNode;
+  tabContext.insertBefore(menuitem, tabContextNewTab.nextSibling);
+  tabContext.addEventListener("popupshowing",
+                              pasteToTab_initContext = function(e) {
+    menuitem.setAttribute("disabled", !readFromClipboard() ? true : false);
+  }, false);
+  tabContext.removeEventListener("popuphiding", pasteToTab_initContext, false);
 }, false);
+
+window.removeEventListener("unload", pasteToTab_init, false);
 
