@@ -41,17 +41,19 @@
 
   <script type="application/x-javascript" src="pasteToTab.js" />
 
-  <popupset id="mainPopupSet">
-    <popup id="pasteToTab-popup">
-      <menuitem
-        id="paste-to-tab-and-go"
-        label="&PasteToTab.menuitem.label;"
-        onmouseover="PasteToTab.mouseOver(this);"
-        onmouseout="PasteToTab.mouseOut(this);"
-        oncommand="PasteToTab.loadURI(PasteToTab.tabbrowser.mContextTab, event);"
-        onclick="PasteToTab.checkForMiddleClick(this, event); closeMenus(this);" />
-    </popup>
-  </popupset>
+  <menupopup id="tabContextMenu">
+    <menuitem
+      id="paste-to-tab-and-go"
+      insertbefore="context_pinTab"
+      label="&PasteToTab.menuitem.label;"
+      onmouseover="PasteToTab.mouseOver(this);"
+      onmouseout="PasteToTab.mouseOut(this);"
+      oncommand="PasteToTab.loadURI(PasteToTab._tab, event);"
+      onclick="PasteToTab.checkForMiddleClick(this, event);" />
+    <menuseparator
+      id="paste-to-tab-and-go-separator"
+      insertbefore="context_pinTab" />
+  </menupopup>
 
 </overlay>
 

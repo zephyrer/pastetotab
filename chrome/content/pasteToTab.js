@@ -18,7 +18,7 @@
   the Initial Developer. All Rights Reserved.
 
   Contributor(s):
-    LouCypher <me@loucypher.mp>
+    LouCypher <loucypher@mozillaca.com>
 
   Alternatively, the contents of this file may be used under the terms of
   either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -35,6 +35,8 @@
 
 var PasteToTab = {
 
+  _tab: null,
+
   get tabbrowser() {
     return getBrowser();
   },
@@ -50,8 +52,7 @@ var PasteToTab = {
   loadURI: function pasteToTab_loadURI(aTab, aEvent) {
     var string = readFromClipboard();
     if (!string) return;
-    if (aEvent.ctrlKey || aEvent.metaKey ||
-        document.popupNode.localName == "tabs") {
+    if (aEvent.ctrlKey || aEvent.metaKey) {
       this.tabbrowser.loadOneTab(string, null, null, null, null, true);
     } else {
       aTab.linkedBrowser.loadURI(string, null, null, true);
@@ -69,7 +70,7 @@ var PasteToTab = {
   },
 
   mouseOver: function pasteToTab_mouseOver(aNode) {
-    var text = readFromClipboard();
+    var text = readFromClipboard() ? readFromClipboard() : "";
     if (this.statusbar.hidden) {
       aNode.setAttribute("tooltiptext", text);
     } else {
@@ -87,17 +88,24 @@ var PasteToTab = {
 }
 
 window.addEventListener("load", pasteToTab_init = function () {
-  var menuitem = document.getElementById("paste-to-tab-and-go");
+/*
   var tabContextNewTab = document.getAnonymousElementByAttribute(
                          PasteToTab.tabbrowser, "id", "context_newTab");
   var tabContext = tabContextNewTab.parentNode;
   tabContext.insertBefore(menuitem, tabContextNewTab.nextSibling);
+*/
+
+  var tabContext = document.getElementById("tabContextMenu");
   tabContext.addEventListener("popupshowing",
                               pasteToTab_initContext = function(e) {
+    var menuitem = document.getElementById("paste-to-tab-and-go");
     menuitem.setAttribute("disabled", !readFromClipboard() ? true : false);
+    PasteToTab._tab = document.popupNode;
   }, false);
   tabContext.removeEventListener("popuphiding", pasteToTab_initContext, false);
 }, false);
 
 window.removeEventListener("unload", pasteToTab_init, false);
 
+//var paste = readFromClipboard();if(!paste) return;loadURI(paste);
+//gURLBar.select(); goDoCommand('cmd_paste'); gURLBar.handleCommand();

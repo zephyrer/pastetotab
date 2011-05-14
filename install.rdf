@@ -5,8 +5,10 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>pastetotab@loucypher</em:id>
+    <em:type>2</em:type>
+    <em:unpack>true</em:unpack>
     <em:name>Paste to Tab and Go</em:name>
-    <em:version>0.3.1</em:version>
+    <em:version>0.3.2</em:version>
     <em:description>Paste URL/text to a tab/new tab and load/search it immediately.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
@@ -15,8 +17,8 @@
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>3.0</em:minVersion>
-        <em:maxVersion>3.5.*</em:maxVersion>
+        <em:minVersion>4.0</em:minVersion>
+        <em:maxVersion>5.0a2</em:maxVersion>
       </Description>
     </em:targetApplication>
 
