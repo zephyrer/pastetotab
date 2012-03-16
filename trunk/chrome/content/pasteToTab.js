@@ -84,28 +84,30 @@ var PasteToTab = {
     } else {
       this.statusbarText.label = "";
     }
-  }
-}
+  },
 
-window.addEventListener("load", pasteToTab_init = function () {
-/*
-  var tabContextNewTab = document.getAnonymousElementByAttribute(
-                         PasteToTab.tabbrowser, "id", "context_newTab");
-  var tabContext = tabContextNewTab.parentNode;
-  tabContext.insertBefore(menuitem, tabContextNewTab.nextSibling);
-*/
-
-  var tabContext = document.getElementById("tabContextMenu");
-  tabContext.addEventListener("popupshowing",
-                              pasteToTab_initContext = function(e) {
+  initContext: function pasteToTab_initContext(aEvent) {
     var menuitem = document.getElementById("paste-to-tab-and-go");
     menuitem.setAttribute("disabled", !readFromClipboard() ? true : false);
     PasteToTab._tab = document.popupNode;
-  }, false);
-  tabContext.removeEventListener("popuphiding", pasteToTab_initContext, false);
-}, false);
+  },
 
-window.removeEventListener("unload", pasteToTab_init, false);
+  init: function pasteToTab_init(aEvent) {
+  /*
+    var tabContextNewTab = document.getAnonymousElementByAttribute(
+                           PasteToTab.tabbrowser, "id", "context_newTab");
+    var tabContext = tabContextNewTab.parentNode;
+    tabContext.insertBefore(menuitem, tabContextNewTab.nextSibling);
+  */
+    var tabContext = document.getElementById("tabContextMenu");
+    tabContext.addEventListener("popupshowing", PasteToTab.initContext, false);
+    tabContext.removeEventListener("popuphiding", PasteToTab.initContext, false);
+  }
+}
+
+window.addEventListener("load", PasteToTab.init, false);
+window.removeEventListener("unload", PasteToTab.init, false);
 
 //var paste = readFromClipboard();if(!paste) return;loadURI(paste);
 //gURLBar.select(); goDoCommand('cmd_paste'); gURLBar.handleCommand();
+
