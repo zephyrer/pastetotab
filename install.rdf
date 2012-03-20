@@ -6,7 +6,7 @@
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
     <em:name>Paste to Tab and Go</em:name>
-    <em:version>0.4a.20110316.01</em:version>
+    <em:version>0.4.1.20120321.03</em:version>
     <em:description>Paste URL/text to a tab/new tab and load/search it immediately.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
