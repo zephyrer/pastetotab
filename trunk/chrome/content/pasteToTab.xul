@@ -34,25 +34,32 @@
   the terms of any one of the MPL, the GPL or the LGPL.
 -->
 
-<!DOCTYPE overlay SYSTEM "chrome://pastetotab/locale/pasteToTab.dtd">
+<!DOCTYPE overlay SYSTEM "../locale/pasteToTab.dtd">
 
 <overlay id="pasteToTab-browserOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/x-javascript" src="pasteToTab.js" />
+  <script type="application/x-javascript" src="pasteToTab.js"/>
 
   <menupopup id="tabContextMenu">
-    <menuitem
-      id="paste-to-tab-and-go"
-      insertbefore="context_pinTab"
-      label="&PasteToTab.menuitem.label;"
-      onmouseover="PasteToTab.mouseOver(this);"
-      onmouseout="PasteToTab.mouseOut(this);"
-      oncommand="PasteToTab.loadURI(PasteToTab._tab, event);"
-      onclick="PasteToTab.checkForMiddleClick(this, event);" />
-    <menuseparator
-      id="paste-to-tab-and-go-separator"
-      insertafter="paste-to-tab-and-go" />
+    <menuseparator id="paste-to-tab-and-go-separator"
+                   insertafter="context_openTabInWindow"/>
+    <menuitem id="paste-to-tab-and-go"
+              insertafter="paste-to-tab-and-go-separator"
+              label="&PasteToTab.menuitem.label;"
+              onmouseover="PasteToTab.mouseOver(this);"
+              onmouseout="PasteToTab.mouseOut(this);"
+              oncommand="PasteToTab.loadURI(PasteToTab._tab, event);"
+              onclick="PasteToTab.checkForMiddleClick(this, event);"/>
+  </menupopup>
+
+  <menupopup id="toolbar-context-menu">
+    <menuseparator id="paste-to-new-tab-and-go-separator"/>
+    <menuitem id="paste-to-new-tab-and-go"
+              label="&PasteToTab.menuitem.label.new;"
+              onmouseover="PasteToTab.mouseOver(this);"
+              onmouseout="PasteToTab.mouseOut(this);"
+              oncommand="PasteToTab.loadOneTab();"/>
   </menupopup>
 
 </overlay>

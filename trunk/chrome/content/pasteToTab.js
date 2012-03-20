@@ -49,29 +49,42 @@ var PasteToTab = {
     return document.getElementById("statusbar-display");
   },
 
-  loadURI: function pasteToTab_loadURI(aTab, aEvent) {
+  loadOneTab: function pasteToTab_loadOneTab() {
     var string = readFromClipboard();
     if (!string) return;
-    if (aEvent.ctrlKey || aEvent.metaKey) {
-      this.tabbrowser.loadOneTab(string, null, null, null, null, true);
-    } else {
-      aTab.linkedBrowser.loadURI(string, null, null, true);
-    }
+    this.tabbrowser.loadOneTab(string, null, null, null, null, true);
+  },
+
+  loadURI: function pasteToTab_loadURI(aTab, aEvent) {
+    if (aEvent.ctrlKey || aEvent.metaKey) return;
+    var string = readFromClipboard();
+    if (!string) return;
+    var browser = aTab.linkedBrowser;
+    var flag = browser.webNavigation.LOAD_FLAGS_ALLOW_THIRD_PARTY_FIXUP;
+    browser.loadURIWithFlags(string, flag, null, null, null);
   },
 
   checkForMiddleClick: function pasteToTab_checkForMiddleClick(aNode, aEvent) {
     if (aNode.getAttribute("disabled") == "true") return;
-    var string = readFromClipboard();
-    if (!string) return;
-    if (aEvent.button == 1) {
-      this.tabbrowser.loadOneTab(string, null, null, null, null, true);
+    if ((aEvent.button == 1) || (aEvent.ctrlKey || aEvent.metaKey)) {
+      var string = readFromClipboard();
+      if (!string) return;
+      this.loadOneTab(string, null, null, null, null, true);
+      closeMenus(aEvent.target);
     }
-    closeMenus(aEvent.target);
+  },
+
+  isURI: function pasteToTab_isURI(aString) {
+    try {
+      return makeURI(aString);
+    } catch(ex) {
+      return null;
+    }
   },
 
   mouseOver: function pasteToTab_mouseOver(aNode) {
     var text = readFromClipboard() ? readFromClipboard() : "";
-    if (this.statusbar.hidden) {
+    if (this.statusbar.hidden || !this.isURI(text)) {
       aNode.setAttribute("tooltiptext", text);
     } else {
       this.statusbarText.label = text;
@@ -79,7 +92,8 @@ var PasteToTab = {
   },
 
   mouseOut: function pasteToTab_mouseOut(aNode) {
-    if (this.statusbar.hidden) {
+    var text = readFromClipboard() ? readFromClipboard() : "";
+    if (this.statusbar.hidden || !this.isURI(text)) {
       aNode.removeAttribute("tooltiptext");
     } else {
       this.statusbarText.label = "";
@@ -92,22 +106,28 @@ var PasteToTab = {
     PasteToTab._tab = document.popupNode;
   },
 
+  initToolbarContext: function pasteToTab_initToolbarContext(aEvent) {
+    var mi = document.getElementById("paste-to-new-tab-and-go");
+    var sep = document.getElementById("paste-to-new-tab-and-go-separator");
+    mi.hidden = document.popupNode.id != "tabbrowser-tabs";
+    sep.hidden = document.popupNode.id != "tabbrowser-tabs";
+    mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+  },
+
   init: function pasteToTab_init(aEvent) {
-  /*
-    var tabContextNewTab = document.getAnonymousElementByAttribute(
-                           PasteToTab.tabbrowser, "id", "context_newTab");
-    var tabContext = tabContextNewTab.parentNode;
-    tabContext.insertBefore(menuitem, tabContextNewTab.nextSibling);
-  */
     var tabContext = document.getElementById("tabContextMenu");
     tabContext.addEventListener("popupshowing", PasteToTab.initContext, false);
     tabContext.removeEventListener("popuphiding", PasteToTab.initContext, false);
+
+    var toolbarContext = document.getElementById("toolbar-context-menu");
+    toolbarContext.addEventListener("popupshowing",
+                                    PasteToTab.initToolbarContext, false);
+    toolbarContext.removeEventListener("popuphiding",
+                                       PasteToTab.initToolbarContext, false);
   }
 }
 
 window.addEventListener("load", PasteToTab.init, false);
 window.removeEventListener("unload", PasteToTab.init, false);
 
-//var paste = readFromClipboard();if(!paste) return;loadURI(paste);
-//gURLBar.select(); goDoCommand('cmd_paste'); gURLBar.handleCommand();
 
