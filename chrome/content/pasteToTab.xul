@@ -50,7 +50,7 @@
               onmouseover="PasteToTab.mouseOver(this);"
               onmouseout="PasteToTab.mouseOut(this);"
               oncommand="PasteToTab.loadURI(PasteToTab._tab, event);"
-              onclick="PasteToTab.checkForMiddleClick(this, event);"/>
+              onclick="PasteToTab.checkForClickEvent(this, event);"/>
   </menupopup>
 
   <menupopup id="toolbar-context-menu">
@@ -60,6 +60,13 @@
               onmouseover="PasteToTab.mouseOver(this);"
               onmouseout="PasteToTab.mouseOut(this);"
               oncommand="PasteToTab.loadOneTab();"/>
+    <menuitem id="urlbar-paste-to-new-tab-and-go"
+              label="&PasteToTab.menuitem.label.new;"
+              hidden="true"
+              onmouseover="PasteToTab.mouseOver(this);"
+              onmouseout="PasteToTab.mouseOut(this);"
+              oncommand="PasteToTab.loadOneTab(
+readFromClipboard() ? readFromClipboard() : gURLBar.value);"/>
   </menupopup>
 
 </overlay>
