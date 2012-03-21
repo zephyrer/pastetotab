@@ -49,9 +49,21 @@ var PasteToTab = {
     return document.getElementById("statusbar-display");
   },
 
-  loadOneTab: function pasteToTab_loadOneTab() {
-    var string = readFromClipboard();
-    if (!string) return;
+  get pasteAndGo() {
+    if (!gURLBar) return null;
+    var inputBox = document.getAnonymousElementByAttribute(
+                            gURLBar, "anonid", "textbox-input-box");
+    var pasteNGo = document.getAnonymousElementByAttribute(
+                            inputBox, "anonid", "paste-and-go");
+    return pasteNGo;
+  },
+
+  loadOneTab: function pasteToTab_loadOneTab(aString) {
+    var string = aString;
+    if (!string) {
+      string = readFromClipboard();
+      if (!string) return;
+    }
     this.tabbrowser.loadOneTab(string, null, null, null, null, true);
   },
 
@@ -64,7 +76,7 @@ var PasteToTab = {
     browser.loadURIWithFlags(string, flag, null, null, null);
   },
 
-  checkForMiddleClick: function pasteToTab_checkForMiddleClick(aNode, aEvent) {
+  checkForClickEvent: function pasteToTab_checkForClickEvent(aNode, aEvent) {
     if (aNode.getAttribute("disabled") == "true") return;
     if ((aEvent.button == 1) || (aEvent.ctrlKey || aEvent.metaKey)) {
       var string = readFromClipboard();
@@ -114,16 +126,36 @@ var PasteToTab = {
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
   },
 
+  initURLBarContext: function pasteToTab_initURLBarContext(aEvent) {
+    var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
+    mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+  },
+
   init: function pasteToTab_init(aEvent) {
     var tabContext = document.getElementById("tabContextMenu");
-    tabContext.addEventListener("popupshowing", PasteToTab.initContext, false);
-    tabContext.removeEventListener("popuphiding", PasteToTab.initContext, false);
+    tabContext.addEventListener("popupshowing",
+                                PasteToTab.initContext, false);
+    tabContext.removeEventListener("popuphiding",
+                                   PasteToTab.initContext, false);
 
     var toolbarContext = document.getElementById("toolbar-context-menu");
     toolbarContext.addEventListener("popupshowing",
                                     PasteToTab.initToolbarContext, false);
     toolbarContext.removeEventListener("popuphiding",
                                        PasteToTab.initToolbarContext, false);
+
+    var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
+    var pg = PasteToTab.pasteAndGo;
+    if (pg) {
+      mi.removeAttribute("hidden");
+      pg.setAttribute("onmouseover", "PasteToTab.mouseOver(this);");
+      pg.setAttribute("onmouseout", "PasteToTab.mouseOut(this);");
+      pg.parentNode.insertBefore(mi, pg.nextSibling);
+      pg.parentNode.addEventListener("popupshowing",
+                                     PasteToTab.initURLBarContext, false);
+      pg.parentNode.removeEventListener("popuphiding",
+                                        PasteToTab.initURLBarContext, false);
+    }
   }
 }
 
