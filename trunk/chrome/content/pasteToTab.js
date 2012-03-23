@@ -161,5 +161,3 @@ var PasteToTab = {
 
 window.addEventListener("load", PasteToTab.init, false);
 window.removeEventListener("unload", PasteToTab.init, false);
-
-

@@ -46,7 +46,7 @@
                    insertafter="context_openTabInWindow"/>
     <menuitem id="paste-to-tab-and-go"
               insertafter="paste-to-tab-and-go-separator"
-              label="&PasteToTab.menuitem.label;"
+              label="&menuitem.label.PasteToThisTab;"
               onmouseover="PasteToTab.mouseOver(this);"
               onmouseout="PasteToTab.mouseOut(this);"
               oncommand="PasteToTab.loadURI(PasteToTab._tab, event);"
@@ -56,12 +56,12 @@
   <menupopup id="toolbar-context-menu">
     <menuseparator id="paste-to-new-tab-and-go-separator"/>
     <menuitem id="paste-to-new-tab-and-go"
-              label="&PasteToTab.menuitem.label.new;"
+              label="&menuitem.label.PasteToNewTab;"
               onmouseover="PasteToTab.mouseOver(this);"
               onmouseout="PasteToTab.mouseOut(this);"
               oncommand="PasteToTab.loadOneTab();"/>
     <menuitem id="urlbar-paste-to-new-tab-and-go"
-              label="&PasteToTab.menuitem.label.new;"
+              label="&menuitem.label.PasteToNewTab;"
               hidden="true"
               onmouseover="PasteToTab.mouseOver(this);"
               onmouseout="PasteToTab.mouseOut(this);"
@@ -70,4 +70,3 @@ readFromClipboard() ? readFromClipboard() : gURLBar.value);"/>
   </menupopup>
 
 </overlay>
-
