@@ -1,5 +1,6 @@
 content   pastetotab                            chrome/content/
 locale    pastetotab     en-US                  chrome/locale/en-US/
 locale    pastetotab     id                     chrome/locale/id/
+locale    pastetotab     zh-CN                  chrome/locale/zh-CN/
 
 overlay   chrome://browser/content/browser.xul  chrome://pastetotab/content/pasteToTab.xul
