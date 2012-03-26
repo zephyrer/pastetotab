@@ -4,10 +4,12 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>pastetotab@loucypher</em:id>
     <em:type>2</em:type>
+    <em:unpack>true</em:unpack>
     <em:name>Paste to Tab and Go</em:name>
-    <em:version>0.4.2a.20120325.02</em:version>
+    <em:version>0.4.2a.20120326.01</em:version>
     <em:description>Paste URL or text to a tab or a new tab and load the URL or search for the text immediately.</em:description>
     <em:creator>LouCypher</em:creator>
+    <em:translator>nl: markh van BabelZilla.org</em:translator>
     <em:translator>zh-CN: Wang.H.K</em:translator>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
     <em:targetApplication>
