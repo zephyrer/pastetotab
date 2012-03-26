@@ -65,8 +65,7 @@
               hidden="true"
               onmouseover="PasteToTab.mouseOver(this);"
               onmouseout="PasteToTab.mouseOut(this);"
-              oncommand="PasteToTab.loadOneTab(
-readFromClipboard() ? readFromClipboard() : gURLBar.value);"/>
+              oncommand="PasteToTab.loadOneTab(readFromClipboard());"/>
   </menupopup>
 
 </overlay>

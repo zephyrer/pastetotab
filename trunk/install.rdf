@@ -6,17 +6,24 @@
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
     <em:name>Paste to Tab and Go</em:name>
-    <em:version>0.4.2a.20120326.01</em:version>
+    <em:version>0.4.3a.20120326.01</em:version>
     <em:description>Paste URL or text to a tab or a new tab and load the URL or search for the text immediately.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:translator>nl: markh van BabelZilla.org</em:translator>
     <em:translator>zh-CN: Wang.H.K</em:translator>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
     <em:targetApplication>
-      <Description>
+      <Description><!--Firefox-->
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
         <em:minVersion>4.0</em:minVersion>
         <em:maxVersion>13.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:targetApplication>
+      <Description><!-- SeaMonkey -->
+        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+        <em:minVersion>2.0</em:minVersion>
+        <em:maxVersion>2.8.*</em:maxVersion>
       </Description>
     </em:targetApplication>
   </Description>
