@@ -41,6 +41,11 @@
 
   <script type="application/x-javascript" src="pasteToTab.js"/>
 
+  <commandset id="mainCommandSet">
+    <command id="PasteToTab:insertURLBarMenuitem"
+             oncommand="PasteToTab.insertURLBarMenuitem();"/>
+  </commandset>
+
   <menupopup id="toolbar-context-menu">
     <menuseparator id="paste-to-tab-and-go-separator"/>
     <menuitem id="paste-to-tab-and-go"
