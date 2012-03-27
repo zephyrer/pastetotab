@@ -35,32 +35,30 @@
 
 var PasteToTab = {
 
-  _tab: null,
-
-  get tabbrowser() {
-    return getBrowser();
+  get browser() {
+    return document.getElementById("content");
   },
 
-  get statusbar() {
-    return document.getElementById("status-bar");
+  get tab() {
+    return this.browser.mContextTab;
   },
 
-  get statusbarText() {
-    return document.getElementById("statusbar-display");
+  debug: function pasteToTab_debug(aMessages) {
+    var debug = Services.prefs.getBoolPref("extensions.pastetotab.debug");
+    if (debug) Application.console.log("Paste to Tab and Go\n" + aMessages);
   },
 
+  // get and return 'Paste & Go' menuitem on URL bar context menu
   get pasteAndGo() {
     if (!gURLBar) return null;
     var inputBox;
     switch (Application.id) {
-      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}":
-        // Firefox
+      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
         inputBox = document.getAnonymousElementByAttribute(
                           gURLBar, "anonid", "textbox-input-box");
         return document.getAnonymousElementByAttribute(
                           inputBox, "anonid", "paste-and-go");
-      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}":
-        // SeaMonkey
+      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
         inputBox = document.getAnonymousElementByAttribute(
                       gURLBar, "class", "textbox-input-box paste-and-go");
         return document.getAnonymousElementByAttribute(
@@ -68,37 +66,57 @@ var PasteToTab = {
     }
   },
 
+  // get and return tab context menu
   get tabContextMenu() {
     var tabContext;
     switch (Application.id) {
-      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}":
-        // Firefox
+      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
         tabContext = document.getElementById("tabContextMenu");
         break;
-
-      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}":
-        // SeaMonkey
-        var png = document.getElementById("paste-to-tab-and-go");
+      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
+        var ptt = document.getElementById("paste-to-tab-and-go");
         var sep = document.getElementById("paste-to-tab-and-go-separator");
         var tabUndoCloseTab = document.getAnonymousElementByAttribute(
-                                this.tabbrowser,
+                                this.browser,
                                 "tbattr", "tabbrowser-undoclosetab");
         tabContext = tabUndoCloseTab.parentNode;
-        tabContext.insertBefore(png, tabUndoCloseTab.nextSibling);
+        tabContext.insertBefore(ptt, tabUndoCloseTab.nextSibling);
         tabContext.insertBefore(sep, tabUndoCloseTab.nextSibling);
     }
     return tabContext;
   },
 
-  loadOneTab: function pasteToTab_loadOneTab(aString) {
-    var string = aString;
-    if (!string) {
-      string = readFromClipboard();
-      if (!string) return;
+  // insert 'Paste to New Tab & Go' menuitem into URL bar context menu
+  insertURLBarMenuitem: function pasteToTab_insertURLBarMenuitem() {
+    var id = "urlbar-paste-to-new-tab-and-go";
+    var pg = this.pasteAndGo;
+    if (!document.getElementById(id) && pg) {
+      var tmpl = document.getElementById("template-paste-to-new-tab-and-go");
+      var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
+      pg.tooltipText = "";
+      pg.setAttribute("onmouseover", "PasteToTab.updateText(this);");
+      pg.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
+      var urlBarCt = pg.parentNode;
+      urlBarCt.insertBefore(mi, pg.nextSibling);
+      urlBarCt.addEventListener("popupshowing", ptt_initURLBar = function(e) {
+        PasteToTab.onURLBarContext(e);
+      }, false);
+      urlBarCt.removeEventListener("popuphiding", ptt_initURLBar, false);
     }
-    this.tabbrowser.loadOneTab(string, null, null, null, null, true);
+    this.debug("Menuitem has " +
+               (document.getElementById(id) ? "" : "NOT ") +
+               "been inserted into URL bar context menu.");
   },
 
+  // load URL or search the web for text into a new tab
+  loadOneTab: function pasteToTab_loadOneTab(aTab) {
+    var string = readFromClipboard();
+    if (!string) return;
+    var tab = this.browser.loadOneTab(string, null, null, null, null, true);
+    //if (!aTab) aTab = this.browser.mCurrentTab;
+  },
+
+  // load URL or search the web for text into a tab
   loadURI: function pasteToTab_loadURI(aTab, aEvent) {
     if (aEvent.ctrlKey || aEvent.metaKey) return;
     var string = readFromClipboard();
@@ -108,9 +126,11 @@ var PasteToTab = {
     browser.loadURIWithFlags(string, flag, null, null, null);
   },
 
+  // check for middle click or ctrl+click
   checkForClickEvent: function pasteToTab_checkForClickEvent(aNode, aEvent) {
     if (aNode.getAttribute("disabled") == "true") return;
-    if ((aEvent.button == 1) || (aEvent.ctrlKey || aEvent.metaKey)) {
+    if ((aEvent.button == 1) || 
+        (aEvent.button == 0) && (aEvent.ctrlKey || aEvent.metaKey)) {
       var string = readFromClipboard();
       if (!string) return;
       this.loadOneTab(string, null, null, null, null, true);
@@ -120,36 +140,36 @@ var PasteToTab = {
 
   isURI: function pasteToTab_isURI(aString) {
     try {
-      return makeURI(aString);
+      return makeURI(aString); // check if a string is valid URI
     } catch(ex) {
-      return null;
+      return null;  // return null if a string is not valid URI
     }
   },
 
-  mouseOver: function pasteToTab_mouseOver(aNode) {
-    var text = readFromClipboard() ? readFromClipboard() : "";
-    if (this.statusbar.hidden || !this.isURI(text)) {
-      aNode.setAttribute("tooltiptext", text);
+  // display clipboard text on statusbar or tooltip when hover on menuitem
+  updateText: function pasteToTab_updateText(aNode, aString) {
+    var text = "";
+    if (aString) text = aString;
+    else text = readFromClipboard() ? readFromClipboard() : "";
+    var statusbar = document.getElementById("status-bar");
+    if (statusbar.hidden || !this.isURI(text)) {
+      aNode.tooltipText = text;
     } else {
-      this.statusbarText.label = text;
+      aNode.tooltipText = "";
+      document.getElementById("statusbar-display").label = text;
     }
   },
 
-  mouseOut: function pasteToTab_mouseOut(aNode) {
-    var text = readFromClipboard() ? readFromClipboard() : "";
-    if (this.statusbar.hidden || !this.isURI(text)) {
-      aNode.removeAttribute("tooltiptext");
-    } else {
-      this.statusbarText.label = "";
-    }
-  },
-
+  // disable 'Paste to Tab & Go' menuitem on tab context menu
+  // if there's no text in clipboard
   onTabContext: function pasteToTab_onTabContext(aEvent) {
     var menuitem = document.getElementById("paste-to-tab-and-go");
     menuitem.setAttribute("disabled", !readFromClipboard() ? true : false);
-    PasteToTab._tab = document.popupNode;
+    this.debug("Tab: " + this.browser.mContextTab.label);
   },
 
+  // disable 'Paste to New Tab & Go' menuitem on toolbar context menu
+  // if there's no text in clipboard
   onToolbarContext: function pasteToTab_onToolbarContext(aEvent) {
     var mi = document.getElementById("paste-to-new-tab-and-go");
     var sep = document.getElementById("paste-to-new-tab-and-go-separator");
@@ -158,41 +178,41 @@ var PasteToTab = {
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
   },
 
+  // disable 'Paste to New Tab & Go' menuitem on URL bar context menu
+  // if there's no text in clipboard
   onURLBarContext: function pasteToTab_onURLBarContext(aEvent) {
     var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+    this.debug("URL bar context menu has been initiated!");
   },
 
+  // initiate browser window
   initBrowser: function pasteToTab_initBrowser(aEvent) {
-    var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
-    var pg = PasteToTab.pasteAndGo;
-    if (pg) {
-      mi.removeAttribute("hidden");
-      pg.setAttribute("onmouseover", "PasteToTab.mouseOver(this);");
-      pg.setAttribute("onmouseout", "PasteToTab.mouseOut(this);");
-      pg.parentNode.insertBefore(mi, pg.nextSibling);
-      pg.parentNode.addEventListener("popupshowing",
-                                     PasteToTab.onURLBarContext, false);
-      pg.parentNode.removeEventListener("popuphiding",
-                                        PasteToTab.onURLBarContext, false);
-    }
+    // insert 'Paste to New Tab & Go' menuitem into URL bar context menu
+    this.insertURLBarMenuitem();
 
+    // Initiate toolbar context menu
     if (document.getElementById("paste-to-new-tab-and-go")) {
-      var toolbarContext = document.getElementById("toolbar-context-menu");
-      toolbarContext.addEventListener("popupshowing",
-                                      PasteToTab.onToolbarContext, false);
-      toolbarContext.removeEventListener("popuphiding",
-                                         PasteToTab.onToolbarContext,
-                                         false);
+      // Firefox only because 'Paste to New Tab & Go' is not added
+      // into toolbar context menu on SeaMonkey
+      var tbCtx = document.getElementById("toolbar-context-menu");
+      tbCtx.addEventListener("popupshowing", ptt_initTbCtx = function(e) {
+        PasteToTab.onToolbarContext(e);
+      }, false);
+      tbCtx.removeEventListener("popuphiding", ptt_initTbCtx, false);
     }
 
-    var tabContext = PasteToTab.tabContextMenu;
-    tabContext.addEventListener("popupshowing",
-                                PasteToTab.onTabContext, false);
-    tabContext.removeEventListener("popuphiding",
-                                   PasteToTab.onTabContext, false);
+    // initiate tab context menu
+    var tabCtx = this.tabContextMenu;
+    tabCtx.addEventListener("popupshowing", ptt_initTabCtx = function(e) {
+      PasteToTab.onTabContext(e);
+    }, false);
+    tabCtx.removeEventListener("popuphiding", ptt_initTabCtx, false);
   }
 }
 
-window.addEventListener("load", PasteToTab.initBrowser, false);
-window.removeEventListener("unload", PasteToTab.initBrowser, false);
+window.addEventListener("load", ptt_initBrowser = function(e) {
+  PasteToTab.initBrowser(e);
+}, false);
+
+window.removeEventListener("unload", ptt_initBrowser, false);

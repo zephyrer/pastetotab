@@ -37,9 +37,14 @@
 <!DOCTYPE overlay SYSTEM "../locale/pasteToTab.dtd">
 
 <overlay id="pasteToTab-browserOverlay"
-         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="pasteToTab.js"/>
+
+  <commandset id="mainCommandSet">
+    <command id="PasteToTab:insertURLBarMenuitem"
+             oncommand="PasteToTab.insertURLBarMenuitem();"/>
+  </commandset>
 
   <menupopup id="tabContextMenu">
     <menuseparator id="paste-to-tab-and-go-separator"
@@ -47,9 +52,10 @@
     <menuitem id="paste-to-tab-and-go"
               insertafter="paste-to-tab-and-go-separator"
               label="&menuitem.label.PasteToThisTab;"
-              onmouseover="PasteToTab.mouseOver(this);"
-              onmouseout="PasteToTab.mouseOut(this);"
-              oncommand="PasteToTab.loadURI(PasteToTab._tab, event);"
+              tooltiptext=""
+              onmouseover="PasteToTab.updateText(this);"
+              onmouseout="PasteToTab.updateText(this, '');"
+              oncommand="PasteToTab.loadURI(PasteToTab.tab, event);"
               onclick="PasteToTab.checkForClickEvent(this, event);"/>
   </menupopup>
 
@@ -57,15 +63,17 @@
     <menuseparator id="paste-to-new-tab-and-go-separator"/>
     <menuitem id="paste-to-new-tab-and-go"
               label="&menuitem.label.PasteToNewTab;"
-              onmouseover="PasteToTab.mouseOver(this);"
-              onmouseout="PasteToTab.mouseOut(this);"
+              tooltiptext=""
+              onmouseover="PasteToTab.updateText(this);"
+              onmouseout="PasteToTab.updateText(this, '');"
               oncommand="PasteToTab.loadOneTab();"/>
-    <menuitem id="urlbar-paste-to-new-tab-and-go"
-              label="&menuitem.label.PasteToNewTab;"
+    <menuitem id="template-paste-to-new-tab-and-go"
               hidden="true"
-              onmouseover="PasteToTab.mouseOver(this);"
-              onmouseout="PasteToTab.mouseOut(this);"
-              oncommand="PasteToTab.loadOneTab(readFromClipboard());"/>
+              label="&menuitem.label.PasteToNewTab;"
+              tooltiptext=""
+              onmouseover="PasteToTab.updateText(this);"
+              onmouseout="PasteToTab.updateText(this, '');"
+              oncommand="PasteToTab.loadOneTab();"/>
   </menupopup>
 
 </overlay>
