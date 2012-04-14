@@ -39,10 +39,9 @@
 
   <script type="application/x-javascript"><![CDATA[
     window.addEventListener("unload", function() {
-      gToolboxDocument.getElementById("PasteToTab:insertURLBarMenuitem")
+      gToolboxDocument.getElementById("PasteToTab:insertMenuitems")
                       .doCommand();
     }, false);
-    console.log("foo");
   ]]></script>
 
 </overlay>
