@@ -48,7 +48,7 @@ var PasteToTab = {
     if (debug) Application.console.log("Paste to Tab and Go\n" + aMessages);
   },
 
-  // get and return 'Paste & Go' menuitem on URL bar context menu
+  // Get and return 'Paste & Go' menuitem on URL Bar context menu
   get pasteAndGo() {
     if (!gURLBar) return null;
     var inputBox;
@@ -66,7 +66,25 @@ var PasteToTab = {
     }
   },
 
-  // get and return tab context menu
+  // Get and return 'Paste & Search' menuitem on Search Bar context menu
+  get pasteAndSearch() {
+    var searchBar = BrowserSearch.searchBar;
+    if (!searchBar) return null;
+    var textBox = document.getAnonymousElementByAttribute(
+                           searchBar, "anonid", "searchbar-textbox");
+    var inputBox = document.getAnonymousElementByAttribute(
+                            textBox, "anonid", "textbox-input-box");
+    switch (Application.id) {
+      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
+        return document.getAnonymousElementByAttribute(
+                                  inputBox, "anonid", "paste-and-search");
+      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
+        return document.getAnonymousElementByAttribute(
+                      inputBox, "cmd", "cmd_pasteAndSearch");
+    }
+  },
+
+  // Get and return tab context menu
   get tabContextMenu() {
     var tabContext;
     switch (Application.id) {
@@ -86,37 +104,72 @@ var PasteToTab = {
     return tabContext;
   },
 
-  // insert 'Paste to New Tab & Go' menuitem into URL bar context menu
+  // Insert 'Paste to New Tab & Go' menuitem into URL Bar context menu
   insertURLBarMenuitem: function pasteToTab_insertURLBarMenuitem() {
     var id = "urlbar-paste-to-new-tab-and-go";
-    var pg = this.pasteAndGo;
-    if (!document.getElementById(id) && pg) {
+    var pi = this.pasteAndGo;
+    if (!document.getElementById(id) && pi) {
       var tmpl = document.getElementById("template-paste-to-new-tab-and-go");
       var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
-      pg.tooltipText = "";
-      pg.setAttribute("onmouseover", "PasteToTab.updateText(this);");
-      pg.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
-      var urlBarCt = pg.parentNode;
-      urlBarCt.insertBefore(mi, pg.nextSibling);
-      urlBarCt.addEventListener("popupshowing", ptt_initURLBar = function(e) {
+      pi.setAttribute("onmouseover", "PasteToTab.updateText(this);");
+      pi.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
+      pi.previousSibling.setAttribute("onmouseover", "PasteToTab.updateText(this);");
+      pi.previousSibling.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
+      var context = pi.parentNode;
+      context.insertBefore(mi, pi.nextSibling);
+      context.addEventListener("popupshowing", ptt_initURLBar = function(e) {
         PasteToTab.onURLBarContext(e);
       }, false);
-      urlBarCt.removeEventListener("popuphiding", ptt_initURLBar, false);
+      context.removeEventListener("popuphiding", ptt_initURLBar, false);
     }
     this.debug("Menuitem has " +
                (document.getElementById(id) ? "" : "NOT ") +
-               "been inserted into URL bar context menu.");
+               "been inserted into URL Bar context menu.");
   },
 
-  // load URL or search the web for text into a new tab
-  loadOneTab: function pasteToTab_loadOneTab(aTab) {
+  // Insert 'Paste to New Tab & Search' menuitem into Search Bar context menu
+  insertSearchBarMenuitem: function pasteToTab_insertSearchBarMenuitem() {
+    var id = "searchbar-paste-to-new-tab-and-search";
+    var pi = this.pasteAndSearch;
+    this.debug("Paste & Search = " + pi);
+    if (!document.getElementById(id) && pi) {
+      var tmpl = document.getElementById("template-paste-to-new-tab-and-search");
+      var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
+      pi.setAttribute("onmouseover", "PasteToTab.updateText(this);");
+      pi.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
+      pi.previousSibling.setAttribute("onmouseover", "PasteToTab.updateText(this);");
+      pi.previousSibling.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
+      var context = pi.parentNode;
+      context.insertBefore(mi, pi.nextSibling);
+      context.addEventListener("popupshowing",
+                                ptt_initSearchBar = function(e) {
+        PasteToTab.onSearchBarContext(e);
+      }, false);
+      context.removeEventListener("popuphiding", ptt_initSearchBar, false);
+    }
+    this.debug("Menuitem has " +
+               (document.getElementById(id) ? "" : "NOT ") +
+               "been inserted into Search Bar context menu.");
+  },
+
+  // Load URL or search the web for text into a new tab
+  go: function pasteToTab_go(aTab) {
     var string = readFromClipboard();
     if (!string) return;
     var tab = this.browser.loadOneTab(string, null, null, null, null, true);
     //if (!aTab) aTab = this.browser.mCurrentTab;
   },
 
-  // load URL or search the web for text into a tab
+  // Search the web for text on new tab
+  search: function pasteToTab_search(aString) {
+    var string = aString ? aString
+                         : readFromClipboard() ? readFromClipboard()
+                                               : "";
+    if (BrowserSearch.searchBar) BrowserSearch.searchBar.value = string;
+    BrowserSearch.loadSearch(string, true);
+  },
+
+  // Load URL or search the web for text into a tab
   loadURI: function pasteToTab_loadURI(aTab, aEvent) {
     if (aEvent.ctrlKey || aEvent.metaKey) return;
     var string = readFromClipboard();
@@ -126,18 +179,19 @@ var PasteToTab = {
     browser.loadURIWithFlags(string, flag, null, null, null);
   },
 
-  // check for middle click or ctrl+click
+  // Check for middle click or ctrl+click
   checkForClickEvent: function pasteToTab_checkForClickEvent(aNode, aEvent) {
     if (aNode.getAttribute("disabled") == "true") return;
-    if ((aEvent.button == 1) || 
+    if ((aEvent.button == 1) ||
         (aEvent.button == 0) && (aEvent.ctrlKey || aEvent.metaKey)) {
       var string = readFromClipboard();
       if (!string) return;
-      this.loadOneTab(string, null, null, null, null, true);
+      this.go(string, null, null, null, null, true);
       closeMenus(aEvent.target);
     }
   },
 
+  // Check if a string is a valid URI
   isURI: function pasteToTab_isURI(aString) {
     try {
       return makeURI(aString); // check if a string is valid URI
@@ -146,21 +200,22 @@ var PasteToTab = {
     }
   },
 
-  // display clipboard text on statusbar or tooltip when hover on menuitem
+  // Display clipboard text on statusbar or tooltip when hover on menuitem
   updateText: function pasteToTab_updateText(aNode, aString) {
     var text = "";
     if (aString) text = aString;
     else text = readFromClipboard() ? readFromClipboard() : "";
-    var statusbar = document.getElementById("status-bar");
+    aNode.tooltipText = text;
+    /*var statusbar = document.getElementById("status-bar");
     if (statusbar.hidden || !this.isURI(text)) {
       aNode.tooltipText = text;
     } else {
       aNode.tooltipText = "";
       document.getElementById("statusbar-display").label = text;
-    }
+    }*/
   },
 
-  // disable 'Paste to Tab & Go' menuitem on tab context menu
+  // Disable 'Paste to Tab & Go' menuitem on tab context menu
   // if there's no text in clipboard
   onTabContext: function pasteToTab_onTabContext(aEvent) {
     var menuitem = document.getElementById("paste-to-tab-and-go");
@@ -168,7 +223,7 @@ var PasteToTab = {
     this.debug("Tab: " + this.browser.mContextTab.label);
   },
 
-  // disable 'Paste to New Tab & Go' menuitem on toolbar context menu
+  // Disable 'Paste to New Tab & Go' menuitem on toolbar context menu
   // if there's no text in clipboard
   onToolbarContext: function pasteToTab_onToolbarContext(aEvent) {
     var mi = document.getElementById("paste-to-new-tab-and-go");
@@ -178,18 +233,29 @@ var PasteToTab = {
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
   },
 
-  // disable 'Paste to New Tab & Go' menuitem on URL bar context menu
+  // Disable 'Paste to New Tab & Go' menuitem on URL Bar context menu
   // if there's no text in clipboard
   onURLBarContext: function pasteToTab_onURLBarContext(aEvent) {
     var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
-    this.debug("URL bar context menu has been initiated!");
+    this.debug("URL Bar context menu has been initiated!");
   },
 
-  // initiate browser window
+  // Disable 'Paste to New Tab & Search' menuitem on Search Bar context menu
+  // if there's no text in clipboard
+  onSearchBarContext: function pasteToTab_onSearchBarContext(aEvent) {
+    var mi = document.getElementById("searchbar-paste-to-new-tab-and-search");
+    mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+    this.debug("Search Bar context menu has been initiated!");
+  },
+
+  // Initiate browser window
   initBrowser: function pasteToTab_initBrowser(aEvent) {
-    // insert 'Paste to New Tab & Go' menuitem into URL bar context menu
-    this.insertURLBarMenuitem();
+    this.insertURLBarMenuitem(); // Insert 'Paste to New Tab & Go'
+                                 // menuitem into URL Bar context menu
+
+    this.insertSearchBarMenuitem(); // Insert 'Paste to New Tab & Search'
+                                    // menuitem into Search Bar context menu
 
     // Initiate toolbar context menu
     if (document.getElementById("paste-to-new-tab-and-go")) {
@@ -202,7 +268,7 @@ var PasteToTab = {
       tbCtx.removeEventListener("popuphiding", ptt_initTbCtx, false);
     }
 
-    // initiate tab context menu
+    // Initiate tab context menu
     var tabCtx = this.tabContextMenu;
     tabCtx.addEventListener("popupshowing", ptt_initTabCtx = function(e) {
       PasteToTab.onTabContext(e);
