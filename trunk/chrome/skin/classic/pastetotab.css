@@ -1,0 +1,3 @@
+#main-window:not([chromehidden=""]) #urlbar-paste-to-new-tab-and-go {
+  display: none;
+}

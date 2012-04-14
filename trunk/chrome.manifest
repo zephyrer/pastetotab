@@ -1,4 +1,5 @@
 content   pastetotab                                    chrome/content/
+skin      pastetotab        classic/1.0                 chrome/skin/classic/
 locale    pastetotab        en-US                       chrome/locale/en-US/
 locale    pastetotab        id                          chrome/locale/id/
 locale    pastetotab        nl                          chrome/locale/nl/

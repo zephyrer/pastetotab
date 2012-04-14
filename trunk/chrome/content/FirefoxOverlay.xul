@@ -34,6 +34,8 @@
   the terms of any one of the MPL, the GPL or the LGPL.
 -->
 
+<?xml-stylesheet href="../skin/"?>
+
 <!DOCTYPE overlay SYSTEM "../locale/pasteToTab.dtd">
 
 <overlay id="pasteToTab-browserOverlay"
