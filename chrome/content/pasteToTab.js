@@ -36,17 +36,24 @@
 
 var PasteToTab = {
 
+  toString: function PasteToTab_toString() {
+    "use strict";
+    return "Paste to Tab and Go";
+  },
+
+  get prefs() {
+    return Services.prefs.getBranch("extensions.pastetotab.");
+  },
+
   get browser() {
     return document.getElementById("content");
   },
 
-  get tab() {
-    return this.browser.mContextTab;
-  },
-
+  // For debugging
   debug: function pasteToTab_debug(aMessages) {
-    var debug = Services.prefs.getBoolPref("extensions.pastetotab.debug");
-    if (debug) Application.console.log("Paste to Tab and Go\n" + aMessages);
+    if (this.prefs.getBoolPref("debug")) {
+      Application.console.log("Paste to Tab and Go\n" + aMessages);
+    }
   },
 
   // Get and return 'Paste & Go' menuitem on URL Bar context menu
@@ -87,22 +94,23 @@ var PasteToTab = {
 
   // Get and return tab context menu
   get tabContextMenu() {
-    var tabContext;
     switch (Application.id) {
       case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
-        tabContext = document.getElementById("tabContextMenu");
-        break;
+        return document.getElementById("tabContextMenu");
+
       case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
         var ptt = document.getElementById("paste-to-tab-and-go");
         var sep = document.getElementById("paste-to-tab-and-go-separator");
         var tabUndoCloseTab = document.getAnonymousElementByAttribute(
                                 this.browser,
                                 "tbattr", "tabbrowser-undoclosetab");
-        tabContext = tabUndoCloseTab.parentNode;
+        var tabContext = tabUndoCloseTab.parentNode;
         tabContext.insertBefore(ptt, tabUndoCloseTab.nextSibling);
         tabContext.insertBefore(sep, tabUndoCloseTab.nextSibling);
+        return tabContext;
+
+      default: return null;
     }
-    return tabContext;
   },
 
   // Insert 'Paste to New Tab & Go' menuitem into URL Bar context menu
@@ -159,18 +167,16 @@ var PasteToTab = {
   },
 
   // Load URL or search the web for text into a new tab
-  go: function pasteToTab_go(aTab) {
+  go: function pasteToTab_go() {
     var string = readFromClipboard();
-    if (!string) return;
+    if (!string) return; // Do nothing if clipboard is empty
     var tab = this.browser.loadOneTab(string, null, null, null, null, true);
-    //if (!aTab) aTab = this.browser.mCurrentTab;
   },
 
   // Search the web for text on new tab
-  search: function pasteToTab_search(aString) {
-    var string = aString ? aString
-                         : readFromClipboard() ? readFromClipboard()
-                                               : "";
+  search: function pasteToTab_search() {
+    var string = readFromClipboard();
+    if (!string) return; // Do nothing if clipboard is empty
     var searchBar = BrowserSearch.searchBar;
     if (searchBar) {
       var textBox = searchBar._textbox
@@ -183,7 +189,7 @@ var PasteToTab = {
         Cu.reportError("Saving search to form history failed: " + ex);
       }
     }
-    // Syntax: BrowserSearch.loadSearch(searchString, useNewTab);
+    // Syntax: BrowserSearch.loadSearch(searchText, useNewTab);
     BrowserSearch.loadSearch(string, true);
   },
 
@@ -231,6 +237,17 @@ var PasteToTab = {
       aNode.tooltipText = "";
       document.getElementById("statusbar-display").label = text;
     }*/
+  },
+
+  // Get and return contribution URL from pref
+  get contributionURL() {
+    return Services.urlFormatter
+                   .formatURL(this.prefs.getCharPref("contributionURL"));
+  },
+
+  // Load donation page
+  contribute: function pasteToTab_contribute() {
+    gBrowser.loadOneTab(this.contributionURL, null, null, null, false);
   },
 
   // Disable 'Paste to Tab & Go' menuitem on tab context menu
@@ -292,6 +309,22 @@ var PasteToTab = {
       PasteToTab.onTabContext(e);
     }, false);
     tabCtx.removeEventListener("popuphiding", ptt_initTabCtx, false);
+
+    // Load donation page on first installation only
+    // Check connection first
+    //BrowserOffline.toggleOfflineStatus(); // offline test
+    if (this.prefs.getBoolPref("firstRun") && navigator.onLine) {
+      var req = new XMLHttpRequest();
+      req.open("GET", this.contributionURL, true);
+      req.onreadystatechange = function (aEvent) {
+        if ((req.readyState == 4) && (req.status == 200)) {
+          PasteToTab.prefs.setBoolPref("firstRun", false);
+          PasteToTab.contribute();
+        }
+      }
+      req.send(null);
+    }
+
   }
 }
 

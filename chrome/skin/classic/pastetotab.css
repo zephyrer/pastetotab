@@ -1,3 +1,5 @@
+#template-paste-to-new-tab-and-go,
+#template-paste-to-new-tab-and-search,
 #main-window:not([chromehidden=""]) #urlbar-paste-to-new-tab-and-go {
   display: none;
 }
