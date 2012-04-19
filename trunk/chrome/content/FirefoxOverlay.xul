@@ -60,7 +60,7 @@
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="PasteToTab.loadURI(PasteToTab.tab, event);"
+              oncommand="PasteToTab.loadURI(gBrowser.mContextTab, event);"
               onclick="PasteToTab.checkForClickEvent(this, event);"/>
   </menupopup>
 
