@@ -120,12 +120,20 @@ var PasteToTab = {
     if (!document.getElementById(id) && pi) {
       var tmpl = document.getElementById("template-paste-to-new-tab-and-go");
       var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
-      pi.setAttribute("onmouseover", "PasteToTab.updateText(this);");
-      pi.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
-      pi.previousSibling.setAttribute("onmouseover",
-                                      "PasteToTab.updateText(this);");
-      pi.previousSibling.setAttribute("onmouseout",
-                                      "PasteToTab.updateText(this, '');");
+      pi.addEventListener("mouseover", ptt1_mouseover = function(e) {
+        PasteToTab.updateText(e.target);
+      }, false);
+      pi.addEventListener("mouseout", ptt1_mouseout = function(e) {
+        PasteToTab.updateText(e.target, "");
+      }, false);
+      pi.previousSibling
+        .addEventListener("mouseover", ptt2_mouseover = function(e) {
+        PasteToTab.updateText(e.target);
+      }, false);
+      pi.previousSibling
+        .addEventListener("mouseout", ptt2_mouseout = function(e) {
+        PasteToTab.updateText(e.target, "");
+      }, false);
       var context = pi.parentNode;
       context.insertBefore(mi, pi.nextSibling);
       context.addEventListener("popupshowing", ptt_initURLBar = function(e) {
@@ -147,12 +155,20 @@ var PasteToTab = {
       var tmpl = document.getElementById("template-paste-to-new-tab-"
                                        + "and-search");
       var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
-      pi.setAttribute("onmouseover", "PasteToTab.updateText(this);");
-      pi.setAttribute("onmouseout", "PasteToTab.updateText(this, '');");
-      pi.previousSibling.setAttribute("onmouseover",
-                                      "PasteToTab.updateText(this);");
-      pi.previousSibling.setAttribute("onmouseout",
-                                      "PasteToTab.updateText(this, '');");
+      pi.addEventListener("mouseover", ptt3_mouseover = function(e) {
+        PasteToTab.updateText(e.target);
+      }, false);
+      pi.addEventListener("mouseout", ptt3_mouseout = function(e) {
+        PasteToTab.updateText(e.target, "");
+      }, false);
+      pi.previousSibling
+        .addEventListener("mouseover", ptt4_mouseover = function(e) {
+        PasteToTab.updateText(e.target);
+      }, false);
+      pi.previousSibling
+        .addEventListener("mouseout", ptt4_mouseout = function(e) {
+        PasteToTab.updateText(e.target, "");
+      }, false);
       var context = pi.parentNode;
       context.insertBefore(mi, pi.nextSibling);
       context.addEventListener("popupshowing",
@@ -167,29 +183,35 @@ var PasteToTab = {
   },
 
   // Load URL or search the web for text into a new tab
-  go: function pasteToTab_go() {
-    var string = readFromClipboard();
-    if (!string) return; // Do nothing if clipboard is empty
-    var tab = this.browser.loadOneTab(string, null, null, null, null, true);
+  go: function pasteToTab_go(aURL) {
+    var string = aURL ? aURL : readFromClipboard() ? readFromClipboard()
+                                                   : "";
+    /* Syntax: loadOneTab(aURI, aReferrerURI, aCharset, aPostData,
+                          aLoadInBackground, aAllowThirdPartyFixup)
+       If aURI is empty, load a new blank tab */
+    this.browser.loadOneTab(string, null, null, null, null, true);
   },
 
   // Search the web for text on new tab
-  search: function pasteToTab_search() {
-    var string = readFromClipboard();
-    if (!string) return; // Do nothing if clipboard is empty
+  search: function pasteToTab_search(aString) {
+    var string = aString ? aString : readFromClipboard() ? readFromClipboard()
+                                                         : "";
     var searchBar = BrowserSearch.searchBar;
     if (searchBar) {
       var textBox = searchBar._textbox
       textBox.value = string;
-      try { // Add pasted string to textbox autocomplete
-        textBox._formHistSvc.addEntry(textBox.
-                                      getAttribute("autocompletesearchparam"),
-                                      string);
-      } catch (ex) {
-        Cu.reportError("Saving search to form history failed: " + ex);
+      if (string) {
+        try { // Add pasted string to textbox autocomplete
+          textBox._formHistSvc
+                 .addEntry(textBox.getAttribute("autocompletesearchparam"),
+                           string);
+        } catch (ex) {
+          Cu.reportError("Saving search to form history failed: " + ex);
+        }
       }
     }
-    // Syntax: BrowserSearch.loadSearch(searchText, useNewTab);
+    /* Syntax: BrowserSearch.loadSearch(searchText, useNewTab);
+       If the string is empty, load search form */
     BrowserSearch.loadSearch(string, true);
   },
 
@@ -250,16 +272,16 @@ var PasteToTab = {
     gBrowser.loadOneTab(this.contributionURL, null, null, null, false);
   },
 
-  // Disable 'Paste to Tab & Go' menuitem on tab context menu
-  // if there's no text in clipboard
+  /* Disable 'Paste to Tab & Go' menuitem on tab context menu
+     if there's no text in clipboard */
   onTabContext: function pasteToTab_onTabContext(aEvent) {
     var menuitem = document.getElementById("paste-to-tab-and-go");
     menuitem.setAttribute("disabled", !readFromClipboard() ? true : false);
     this.debug("Tab: " + this.browser.mContextTab.label);
   },
 
-  // Disable 'Paste to New Tab & Go' menuitem on toolbar context menu
-  // if there's no text in clipboard
+  /* Disable 'Paste to New Tab & Go' menuitem on toolbar context menu
+     if there's no text in clipboard */
   onToolbarContext: function pasteToTab_onToolbarContext(aEvent) {
     var mi = document.getElementById("paste-to-new-tab-and-go");
     var sep = document.getElementById("paste-to-new-tab-and-go-separator");
@@ -268,16 +290,16 @@ var PasteToTab = {
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
   },
 
-  // Disable 'Paste to New Tab & Go' menuitem on URL Bar context menu
-  // if there's no text in clipboard
+  /* Disable 'Paste to New Tab & Go' menuitem on URL Bar context menu
+     if there's no text in clipboard */
   onURLBarContext: function pasteToTab_onURLBarContext(aEvent) {
     var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
     this.debug("URL Bar context menu has been initiated!");
   },
 
-  // Disable 'Paste to New Tab & Search' menuitem on Search Bar context menu
-  // if there's no text in clipboard
+  /* Disable 'Paste to New Tab & Search' menuitem on Search Bar context menu
+     if there's no text in clipboard */
   onSearchBarContext: function pasteToTab_onSearchBarContext(aEvent) {
     var mi = document.getElementById("searchbar-paste-to-new-tab-and-search");
     mi.setAttribute("disabled", !readFromClipboard() ? true : false);
@@ -294,8 +316,8 @@ var PasteToTab = {
 
     // Initiate toolbar context menu
     if (document.getElementById("paste-to-new-tab-and-go")) {
-      // Firefox only because 'Paste to New Tab & Go' is not added
-      // into toolbar context menu on SeaMonkey
+      /* Firefox only because 'Paste to New Tab & Go' is not added
+         into toolbar context menu on SeaMonkey */
       var tbCtx = document.getElementById("toolbar-context-menu");
       tbCtx.addEventListener("popupshowing", ptt_initTbCtx = function(e) {
         PasteToTab.onToolbarContext(e);
@@ -310,8 +332,8 @@ var PasteToTab = {
     }, false);
     tabCtx.removeEventListener("popuphiding", ptt_initTabCtx, false);
 
-    // Load donation page on first installation only
-    // Check connection first
+    /* Load donation page on first installation only
+       Check connection first */
     //BrowserOffline.toggleOfflineStatus(); // offline test
     if (this.prefs.getBoolPref("firstRun") && navigator.onLine) {
       var req = new XMLHttpRequest();
