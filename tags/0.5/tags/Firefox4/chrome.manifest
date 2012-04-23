@@ -1,5 +1,0 @@
-content   pastetotab                            chrome/content/
-locale    pastetotab     en-US                  chrome/locale/en-US/
-
-overlay   chrome://browser/content/browser.xul  chrome://pastetotab/content/pasteToTab.xul
-
