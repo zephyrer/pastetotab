@@ -1,3 +1,4 @@
-<!ENTITY menuitem.label.PasteToThisTab "Naar dit tabblad plakken &amp; Gaan">
-<!ENTITY menuitem.label.PasteToNewTab "Naar nieuw tabblad plakken &amp; Gaan">
-<!ENTITY menuitem.label.PasteToNewTab.search "Naar nieuw tabblad plakken &amp; Zoeken">
+<!ENTITY menuitem.label.PasteToThisTab        "Naar dit tabblad plakken &amp; Gaan">
+<!ENTITY menuitem.label.PasteToNewTab         "Naar nieuw tabblad plakken &amp; Gaan">
+<!ENTITY menuitem.label.PasteToNewTab.search  "Naar nieuw tabblad plakken &amp; Zoeken">
+<!ENTITY menuitem.label.PasteText             "Paste Text &amp; Go">

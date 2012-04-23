@@ -115,17 +115,19 @@ var PasteToTab = {
 
   // Insert 'Paste to New Tab & Go' menuitem into URL Bar context menu
   insertURLBarMenuitem: function pasteToTab_insertURLBarMenuitem() {
-    var id = "urlbar-paste-to-new-tab-and-go";
+    function $(aId) {
+      return document.getElementById(aId);
+    }
+
     var pi = this.pasteAndGo;
-    if (!document.getElementById(id) && pi) {
-      var tmpl = document.getElementById("template-paste-to-new-tab-and-go");
-      var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
+    if (pi) {
       pi.addEventListener("mouseover", ptt1_mouseover = function(e) {
         PasteToTab.updateText(e.target);
       }, false);
       pi.addEventListener("mouseout", ptt1_mouseout = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
+
       pi.previousSibling
         .addEventListener("mouseover", ptt2_mouseover = function(e) {
         PasteToTab.updateText(e.target);
@@ -134,16 +136,30 @@ var PasteToTab = {
         .addEventListener("mouseout", ptt2_mouseout = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
+
+      var tmpl, mi;
       var context = pi.parentNode;
-      context.insertBefore(mi, pi.nextSibling);
-      context.addEventListener("popupshowing", ptt_initURLBar = function(e) {
-        PasteToTab.onURLBarContext(e);
-      }, false);
-      context.removeEventListener("popuphiding", ptt_initURLBar, false);
+      var ids = ["paste-to-new-tab-and-go", "paste-text-and-go"];
+      for (var i = 0; i < ids.length; i++) {
+        if (!$("urlbar-" + ids[i])) {
+          tmpl = $("template-" + ids[i]);
+          mi = tmpl.cloneNode(true);
+          mi.id = "urlbar-" + ids[i];
+          mi.removeAttribute("hidden");
+          context.insertBefore(mi, pi.nextSibling);
+        }
+        this.debug("#urlbar-" + ids[i] + " has " + ($(ids[i]) ? "" : "NOT ")
+                 + "been inserted into URL Bar context menu.");
+      }
+
+      if ($(ids[0]) || $(ids[1])) {
+        context.addEventListener("popupshowing",
+                                 ptt_initURLBar = function(e) {
+          PasteToTab.onURLBarContext(e);
+        }, false);
+        context.removeEventListener("popuphiding", ptt_initURLBar, false);
+      }
     }
-    this.debug("Menuitem has "
-             + (document.getElementById(id) ? "" : "NOT ")
-             + "been inserted into URL Bar context menu.");
   },
 
   // Insert 'Paste to New Tab & Search' menuitem into Search Bar context menu
@@ -151,16 +167,15 @@ var PasteToTab = {
     var id = "searchbar-paste-to-new-tab-and-search";
     var pi = this.pasteAndSearch;
     this.debug("Paste & Search = " + pi);
-    if (!document.getElementById(id) && pi) {
-      var tmpl = document.getElementById("template-paste-to-new-tab-"
-                                       + "and-search");
-      var mi = tmpl.cloneNode(true); mi.id = id; mi.removeAttribute("hidden");
+
+    if (pi) {
       pi.addEventListener("mouseover", ptt3_mouseover = function(e) {
         PasteToTab.updateText(e.target);
       }, false);
       pi.addEventListener("mouseout", ptt3_mouseout = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
+
       pi.previousSibling
         .addEventListener("mouseover", ptt4_mouseover = function(e) {
         PasteToTab.updateText(e.target);
@@ -169,14 +184,24 @@ var PasteToTab = {
         .addEventListener("mouseout", ptt4_mouseout = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
-      var context = pi.parentNode;
-      context.insertBefore(mi, pi.nextSibling);
-      context.addEventListener("popupshowing",
-                                ptt_initSearchBar = function(e) {
-        PasteToTab.onSearchBarContext(e);
-      }, false);
-      context.removeEventListener("popuphiding", ptt_initSearchBar, false);
+
+      if (!document.getElementById(id)) {
+        var tmpl = document.getElementById("template-paste-to-new-tab-"
+                                         + "and-search");
+        var mi = tmpl.cloneNode(true);
+        mi.id = id;
+        mi.removeAttribute("hidden");
+
+        var context = pi.parentNode;
+        context.insertBefore(mi, pi.nextSibling);
+        context.addEventListener("popupshowing",
+                                  ptt_initSearchBar = function(e) {
+          PasteToTab.onSearchBarContext(e);
+        }, false);
+        context.removeEventListener("popuphiding", ptt_initSearchBar, false);
+      }
     }
+
     this.debug("Menuitem has "
              + (document.getElementById(id) ? "" : "NOT ")
              + "been inserted into Search Bar context menu.");
@@ -293,8 +318,15 @@ var PasteToTab = {
   /* Disable 'Paste to New Tab & Go' menuitem on URL Bar context menu
      if there's no text in clipboard */
   onURLBarContext: function pasteToTab_onURLBarContext(aEvent) {
-    var mi = document.getElementById("urlbar-paste-to-new-tab-and-go");
-    mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+    var mi;
+    var ids = ["urlbar-paste-to-new-tab-and-go",
+               "urlbar-paste-text-and-go"];
+    for (var i in ids) {
+      mi = document.getElementById(ids[i]);
+      mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+    }
+    mi.setAttribute("disabled",
+                    !this.prefs.getBoolPref("experimental.pasteTextAndGo"));
     this.debug("URL Bar context menu has been initiated!");
   },
 
