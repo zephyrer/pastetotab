@@ -1,0 +1,4 @@
+<!ENTITY menuitem.label.PasteToThisTab        "Paste to This Tab &amp; Go">
+<!ENTITY menuitem.label.PasteToNewTab         "Paste to New Tab &amp; Go">
+<!ENTITY menuitem.label.PasteToNewTab.search  "Paste to New Tab &amp; Search">
+<!ENTITY menuitem.label.PasteText             "Paste Text &amp; Go">
