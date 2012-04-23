@@ -4,15 +4,14 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>pastetotab@loucypher</em:id>
     <em:type>2</em:type>
-    <!--em:unpack>true</em:unpack-->
+    <em:unpack>true</em:unpack>
     <em:name>Paste to Tab and Go</em:name>
-    <em:version>0.6a2012042301</em:version>
+    <em:version>0.5</em:version>
     <em:description>Paste URL or text to a tab or a new tab and load the URL or search for the text immediately.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:contributor>Clipboard icon: Double-J Design &lt;http://www.doublejdesign.co.uk/&gt;</em:contributor>
-    <em:translator>markh van BabelZilla.org (nl)</em:translator>
-    <em:translator>ДакСРБИЈА (sr)</em:translator>
-    <em:translator>Wang.H.K (zh-CN)</em:translator>
+    <em:translator>nl: markh van BabelZilla.org</em:translator>
+    <em:translator>zh-CN: Wang.H.K</em:translator>
     <em:iconURL>chrome://pastetotab/content/pasteToTab-48.png</em:iconURL>
     <em:icon64URL>chrome://pastetotab/content/pasteToTab-64.png</em:icon64URL>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>

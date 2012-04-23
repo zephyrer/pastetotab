@@ -5,7 +5,7 @@
   The contents of this file are subject to the Mozilla Public License Version
   1.1 (the "License"); you may not use this file except in compliance with
   the License. You may obtain a copy of the License at
-  http://www.mozilla.org/MPL/1.1/
+  http://www.mozilla.org/MPL/
 
   Software distributed under the License is distributed on an "AS IS" basis,
   WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
@@ -34,9 +34,7 @@
   the terms of any one of the MPL, the GPL or the LGPL.
 -->
 
-<?xml-stylesheet href="../skin/"?>
-
-<!DOCTYPE overlay SYSTEM "../locale/">
+<!DOCTYPE overlay SYSTEM "../locale/pasteToTab.dtd">
 
 <overlay id="pasteToTab-browserOverlay"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -44,11 +42,8 @@
   <script type="application/x-javascript" src="pasteToTab.js"/>
 
   <commandset id="mainCommandSet">
-    <command id="PasteToTab:insertMenuitems"
-             oncommand="PasteToTab.insertURLBarMenuitem();
- window.setTimeout(function() {
- PasteToTab.insertSearchBarMenuitem();
- }, 1000)"/>
+    <command id="PasteToTab:insertURLBarMenuitem"
+             oncommand="PasteToTab.insertURLBarMenuitem();"/>
   </commandset>
 
   <menupopup id="tabContextMenu">
@@ -60,7 +55,7 @@
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="PasteToTab.loadURI(gBrowser.mContextTab, event);"
+              oncommand="PasteToTab.loadURI(PasteToTab.tab, event);"
               onclick="PasteToTab.checkForClickEvent(this, event);"/>
   </menupopup>
 
@@ -71,29 +66,14 @@
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="PasteToTab.go();"/>
-    <menuitem id="template-paste-text-and-go"
-              hidden="true"
-              label="&menuitem.label.PasteText;"
-              tooltiptext=""
-              onmouseover="PasteToTab.updateText(this);"
-              onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="goDoCommand('cmd_paste');
- gURLBar.handleCommand();"/>
+              oncommand="PasteToTab.loadOneTab();"/>
     <menuitem id="template-paste-to-new-tab-and-go"
               hidden="true"
               label="&menuitem.label.PasteToNewTab;"
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="PasteToTab.go();"/>
-    <menuitem id="template-paste-to-new-tab-and-search"
-              hidden="true"
-              label="&menuitem.label.PasteToNewTab.search;"
-              tooltiptext=""
-              onmouseover="PasteToTab.updateText(this);"
-              onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="PasteToTab.search();"/>
+              oncommand="PasteToTab.loadOneTab();"/>
   </menupopup>
 
 </overlay>
