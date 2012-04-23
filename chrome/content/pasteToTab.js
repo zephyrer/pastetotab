@@ -318,15 +318,16 @@ var PasteToTab = {
   /* Disable 'Paste to New Tab & Go' menuitem on URL Bar context menu
      if there's no text in clipboard */
   onURLBarContext: function pasteToTab_onURLBarContext(aEvent) {
-    var mi;
-    var ids = ["urlbar-paste-to-new-tab-and-go",
-               "urlbar-paste-text-and-go"];
-    for (var i in ids) {
-      mi = document.getElementById(ids[i]);
-      mi.setAttribute("disabled", !readFromClipboard() ? true : false);
-    }
-    mi.setAttribute("disabled",
-                    !this.prefs.getBoolPref("experimental.pasteTextAndGo"));
+    var ids = ["urlbar-paste-to-new-tab-and-go", "urlbar-paste-text-and-go"];
+    document.getElementById(ids[0])
+            .setAttribute("disabled", !readFromClipboard() ? true : false);
+
+    document.getElementById(ids[1])
+            .setAttribute("disabled",
+                          !(readFromClipboard() &&
+                            this.prefs
+                                .getBoolPref("experimental.pasteTextAndGo")));
+
     this.debug("URL Bar context menu has been initiated!");
   },
 
