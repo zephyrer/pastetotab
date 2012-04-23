@@ -1,4 +1,3 @@
-<!ENTITY menuitem.label.PasteToThisTab        "粘贴到此标签并转到">
-<!ENTITY menuitem.label.PasteToNewTab         "粘贴到新标签并转到">
-<!ENTITY menuitem.label.PasteToNewTab.search  "粘贴到新标签并搜索">
-<!ENTITY menuitem.label.PasteText             "Paste Text &amp; Go">
+<!ENTITY menuitem.label.PasteToThisTab "粘贴到此标签并转到">
+<!ENTITY menuitem.label.PasteToNewTab "粘贴到新标签并转到">
+<!ENTITY menuitem.label.PasteToNewTab.search "粘贴到新标签并搜索">

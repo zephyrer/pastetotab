@@ -60,14 +60,6 @@
               onmouseout="PasteToTab.updateText(this, '');"
               oncommand="PasteToTab.loadURI(gBrowser.mContextTab, event);"
               onclick="PasteToTab.checkForClickEvent(this, event);"/>
-    <menuitem id="template-paste-text-and-go"
-              hidden="true"
-              label="&menuitem.label.PasteText;"
-              tooltiptext=""
-              onmouseover="PasteToTab.updateText(this);"
-              onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="goDoCommand('cmd_paste');
- gURLBar.handleCommand();"/>
     <menuitem id="template-paste-to-new-tab-and-go"
               hidden="true"
               label="&menuitem.label.PasteToNewTab;"
