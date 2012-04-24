@@ -294,7 +294,9 @@ var PasteToTab = {
 
   // Load donation page
   contribute: function pasteToTab_contribute() {
-    gBrowser.loadOneTab(this.contributionURL, null, null, null, false);
+    //gBrowser.loadOneTab(this.contributionURL, null, null, null, false);
+    //http://mxr.mozilla.org/mozilla-central/source/browser/base/content/browser.js#8993
+    switchToTabHavingURI(this.contributionURL, true);
   },
 
   /* Disable 'Paste to Tab & Go' menuitem on tab context menu
@@ -365,8 +367,8 @@ var PasteToTab = {
     }, false);
     tabCtx.removeEventListener("popuphiding", ptt_initTabCtx, false);
 
-    /* Load donation page on first installation only
-       Check connection first */
+    // Load donation page on first installation only
+    // Check connection first
     //BrowserOffline.toggleOfflineStatus(); // offline test
     if (this.prefs.getBoolPref("firstRun") && navigator.onLine) {
       var req = new XMLHttpRequest();
