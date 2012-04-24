@@ -1,4 +1,9 @@
-<!ENTITY menuitem.label.PasteToThisTab        "Paste to This Tab &amp; Go">
-<!ENTITY menuitem.label.PasteToNewTab         "Paste to New Tab &amp; Go">
-<!ENTITY menuitem.label.PasteToNewTab.search  "Paste to New Tab &amp; Search">
-<!ENTITY menuitem.label.PasteText             "Paste Text &amp; Go">
+<!ENTITY menuitem.PasteToThisTab          "Paste to This Tab &amp; Go">
+<!ENTITY menuitem.PasteToNewTab           "Paste to New Tab &amp; Go">
+<!ENTITY menuitem.PasteToNewTab.search    "Paste to New Tab &amp; Search">
+<!ENTITY menuitem.PasteText               "Paste Text &amp; Go">
+<!ENTITY options.title                    "Paste to Tab and Go Options">
+<!ENTITY options.urlbar                   "Location Bar Context Menu">
+<!ENTITY options.tab                      "Tab Context Menu">
+<!ENTITY options.tabbar                   "Tab Bar Context Menu">
+<!ENTITY options.searchbar                "Search Bar Context Menu">

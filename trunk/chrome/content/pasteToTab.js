@@ -45,15 +45,36 @@ var PasteToTab = {
     return Services.prefs.getBranch("extensions.pastetotab.");
   },
 
+  getBoolPref: function pasteToTab_prefs_getBoolPref(aPrefString) {
+    return this.prefs.getBoolPref(aPrefString);
+  },
+
   get browser() {
     return document.getElementById("content");
   },
 
   // For debugging
   debug: function pasteToTab_debug(aMessages) {
-    if (this.prefs.getBoolPref("debug")) {
+    if (this.getBoolPref("debug")) {
       Application.console.log("Paste to Tab and Go\n" + aMessages);
     }
+  },
+
+  // Open the options dialog
+  options: function pasteToTab_options() {
+    var winName = "pastetotab-options";
+    var wenum = Services.ww.getWindowEnumerator();
+    var index = 1;
+    while (wenum.hasMoreElements()) {
+      var win = wenum.getNext();
+      if (win.name == winName) {
+        win.focus();
+        return;
+      }
+      index++;
+    }
+    openDialog("chrome://pastetotab/content/options.xul", winName,
+               "chrome, dialog, close, titlebar, centerscreen, resizable");
   },
 
   // Get and return 'Paste & Go' menuitem on URL Bar context menu
@@ -207,10 +228,17 @@ var PasteToTab = {
              + "been inserted into Search Bar context menu.");
   },
 
+  get clipboard() {
+    return readFromClipboard() ? readFromClipboard() : "";
+  },
+
+  get clipboardIsEmpty() {
+    return this.clipboard ? false : true;
+  },
+
   // Load URL or search the web for text into a new tab
   go: function pasteToTab_go(aURL) {
-    var string = aURL ? aURL : readFromClipboard() ? readFromClipboard()
-                                                   : "";
+    var string = aURL ? aURL : this.clipboard;
     /* Syntax: loadOneTab(aURI, aReferrerURI, aCharset, aPostData,
                           aLoadInBackground, aAllowThirdPartyFixup)
        If aURI is empty, load a new blank tab */
@@ -219,8 +247,7 @@ var PasteToTab = {
 
   // Search the web for text on new tab
   search: function pasteToTab_search(aString) {
-    var string = aString ? aString : readFromClipboard() ? readFromClipboard()
-                                                         : "";
+    var string = aString ? aString : this.clipboard;
     var searchBar = BrowserSearch.searchBar;
     if (searchBar) {
       var textBox = searchBar._textbox
@@ -243,7 +270,7 @@ var PasteToTab = {
   // Load URL or search the web for text into a tab
   loadURI: function pasteToTab_loadURI(aTab, aEvent) {
     if (aEvent.ctrlKey || aEvent.metaKey) return;
-    var string = readFromClipboard();
+    var string = this.clipboard;
     if (!string) return;
     var browser = aTab.linkedBrowser;
     var flag = browser.webNavigation.LOAD_FLAGS_ALLOW_THIRD_PARTY_FIXUP;
@@ -255,35 +282,16 @@ var PasteToTab = {
     if (aNode.getAttribute("disabled") == "true") return;
     if ((aEvent.button == 1) ||
         (aEvent.button == 0) && (aEvent.ctrlKey || aEvent.metaKey)) {
-      var string = readFromClipboard();
+      var string = this.clipboard;
       if (!string) return;
       this.go(string, null, null, null, null, true);
       closeMenus(aEvent.target);
     }
   },
 
-  // Check if a string is a valid URI
-  isURI: function pasteToTab_isURI(aString) {
-    try {
-      return makeURI(aString); // check if a string is valid URI
-    } catch(ex) {
-      return null;  // return null if a string is not valid URI
-    }
-  },
-
   // Display clipboard text on tooltip when hover on menuitem
   updateText: function pasteToTab_updateText(aNode, aString) {
-    var text = "";
-    if (aString) text = aString;
-    else text = readFromClipboard() ? readFromClipboard() : "";
-    aNode.tooltipText = text;
-    /*var statusbar = document.getElementById("status-bar");
-    if (statusbar.hidden || !this.isURI(text)) {
-      aNode.tooltipText = text;
-    } else {
-      aNode.tooltipText = "";
-      document.getElementById("statusbar-display").label = text;
-    }*/
+    aNode.tooltipText = aString ? aString : this.clipboard;
   },
 
   // Get and return contribution URL from pref
@@ -299,45 +307,53 @@ var PasteToTab = {
     switchToTabHavingURI(this.contributionURL, true);
   },
 
-  /* Disable 'Paste to Tab & Go' menuitem on tab context menu
-     if there's no text in clipboard */
+  // Enable/disable and show/hide menuitem
+  toggleNode: function pasteToTab_toggleNode(aId, aPrefString, aEvent) {
+    var node = document.getElementById(aId);
+    if (!node) return;
+
+    // Disable menuitem if clipboard is empty
+    node.disabled = this.clipboardIsEmpty;
+
+    // Hide menuitem if pref is false
+    if (aEvent && (aEvent.target.id == "toolbar-context-menu")) {
+      node.hidden = !(this.getBoolPref(aPrefString) &&
+                      (document.popupNode.id == "tabbrowser-tabs"))
+    } else {
+      node.hidden = !this.getBoolPref(aPrefString);
+    }
+  },
+
+  // Toggle 'Paste to Tab & Go' menuitem on tab context menu
   onTabContext: function pasteToTab_onTabContext(aEvent) {
-    var menuitem = document.getElementById("paste-to-tab-and-go");
-    menuitem.setAttribute("disabled", !readFromClipboard() ? true : false);
+    this.toggleNode("paste-to-tab-and-go", "tab.pasteToThisTabAndGo");
+    this.toggleNode("paste-to-tab-and-go-separator",
+                    "tab.pasteToThisTabAndGo");
     this.debug("Tab: " + this.browser.mContextTab.label);
   },
 
-  /* Disable 'Paste to New Tab & Go' menuitem on toolbar context menu
-     if there's no text in clipboard */
+  // Toggle 'Paste to New Tab & Go' menuitem on toolbar context menu
   onToolbarContext: function pasteToTab_onToolbarContext(aEvent) {
-    var mi = document.getElementById("paste-to-new-tab-and-go");
-    var sep = document.getElementById("paste-to-new-tab-and-go-separator");
-    mi.hidden = document.popupNode.id != "tabbrowser-tabs";
-    sep.hidden = document.popupNode.id != "tabbrowser-tabs";
-    mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+    this.toggleNode("paste-to-new-tab-and-go",
+                    "tabbar.pasteToNewTabAndGo",
+                    aEvent);
+    this.toggleNode("paste-to-new-tab-and-go-separator",
+                    "tabbar.pasteToNewTabAndGo",
+                    aEvent);
   },
 
-  /* Disable 'Paste to New Tab & Go' menuitem on URL Bar context menu
-     if there's no text in clipboard */
+  // Toggle 'Paste to New Tab & Go' menuitem on URL Bar context menu
   onURLBarContext: function pasteToTab_onURLBarContext(aEvent) {
-    var ids = ["urlbar-paste-to-new-tab-and-go", "urlbar-paste-text-and-go"];
-    document.getElementById(ids[0])
-            .setAttribute("disabled", !readFromClipboard() ? true : false);
-
-    document.getElementById(ids[1])
-            .setAttribute("disabled",
-                          !(readFromClipboard() &&
-                            this.prefs
-                                .getBoolPref("experimental.pasteTextAndGo")));
-
+    this.toggleNode("urlbar-paste-to-new-tab-and-go",
+                    "urlbar.pasteToNewTabAndGo");
+    this.toggleNode("urlbar-paste-text-and-go", "urlbar.pasteTextAndGo");
     this.debug("URL Bar context menu has been initiated!");
   },
 
-  /* Disable 'Paste to New Tab & Search' menuitem on Search Bar context menu
-     if there's no text in clipboard */
+  // Toggle 'Paste to New Tab & Search' menuitem on Search Bar context menu
   onSearchBarContext: function pasteToTab_onSearchBarContext(aEvent) {
-    var mi = document.getElementById("searchbar-paste-to-new-tab-and-search");
-    mi.setAttribute("disabled", !readFromClipboard() ? true : false);
+    this.toggleNode("searchbar-paste-to-new-tab-and-search",
+                    "searchbar.pasteToNewTabAndSearch");
     this.debug("Search Bar context menu has been initiated!");
   },
 
@@ -370,7 +386,7 @@ var PasteToTab = {
     // Load donation page on first installation only
     // Check connection first
     //BrowserOffline.toggleOfflineStatus(); // offline test
-    if (this.prefs.getBoolPref("firstRun") && navigator.onLine) {
+    if (this.getBoolPref("firstRun") && navigator.onLine) {
       var req = new XMLHttpRequest();
       req.open("GET", this.contributionURL, true);
       req.onreadystatechange = function (aEvent) {

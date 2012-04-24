@@ -56,7 +56,7 @@
                    insertafter="context_openTabInWindow"/>
     <menuitem id="paste-to-tab-and-go"
               insertafter="paste-to-tab-and-go-separator"
-              label="&menuitem.label.PasteToThisTab;"
+              label="&menuitem.PasteToThisTab;"
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
@@ -67,14 +67,14 @@
   <menupopup id="toolbar-context-menu">
     <menuseparator id="paste-to-new-tab-and-go-separator"/>
     <menuitem id="paste-to-new-tab-and-go"
-              label="&menuitem.label.PasteToNewTab;"
+              label="&menuitem.PasteToNewTab;"
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
               oncommand="PasteToTab.go();"/>
     <menuitem id="template-paste-text-and-go"
               hidden="true"
-              label="&menuitem.label.PasteText;"
+              label="&menuitem.PasteText;"
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
@@ -82,18 +82,34 @@
  gURLBar.handleCommand();"/>
     <menuitem id="template-paste-to-new-tab-and-go"
               hidden="true"
-              label="&menuitem.label.PasteToNewTab;"
+              label="&menuitem.PasteToNewTab;"
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
               oncommand="PasteToTab.go();"/>
     <menuitem id="template-paste-to-new-tab-and-search"
               hidden="true"
-              label="&menuitem.label.PasteToNewTab.search;"
+              label="&menuitem.PasteToNewTab.search;"
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
               oncommand="PasteToTab.search();"/>
+  </menupopup>
+
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="ToolsPopup_paste-to-tab-options"
+              insertbefore="menu_preferences"
+              class="menuitem-iconic"
+              label="&options.title;"
+              oncommand="PasteToTab.options();"/>
+  </menupopup>
+
+  <menupopup id="appmenu_customizeMenu">
+    <menuitem id="appmenu_paste-to-tab-options"
+              insertafter="appmenu_preferences"
+              class="menuitem-iconic"
+              label="&options.title;"
+              oncommand="PasteToTab.options();"/>
   </menupopup>
 
 </overlay>

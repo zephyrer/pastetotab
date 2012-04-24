@@ -1,4 +1,9 @@
-<!ENTITY menuitem.label.PasteToThisTab        "粘贴到此标签并转到">
-<!ENTITY menuitem.label.PasteToNewTab         "粘贴到新标签并转到">
-<!ENTITY menuitem.label.PasteToNewTab.search  "粘贴到新标签并搜索">
-<!ENTITY menuitem.label.PasteText             "Paste Text &amp; Go">
+<!ENTITY menuitem.PasteToThisTab          "粘贴到此标签并转到">
+<!ENTITY menuitem.PasteToNewTab           "粘贴到新标签并转到">
+<!ENTITY menuitem.PasteToNewTab.search    "粘贴到新标签并搜索">
+<!ENTITY menuitem.PasteText               "Paste Text &amp; Go">
+<!ENTITY options.title                    "Paste to Tab and Go Options">
+<!ENTITY options.urlbar                   "Location Bar Context Menu">
+<!ENTITY options.tab                      "Tab Context Menu">
+<!ENTITY options.tabbar                   "Tab Bar Context Menu">
+<!ENTITY options.searchbar                "Search Bar Context Menu">
