@@ -13,7 +13,7 @@
     <em:translator>markh van BabelZilla.org (nl)</em:translator>
     <em:translator>ДакСРБИЈА (sr)</em:translator>
     <em:translator>Wang.H.K (zh-CN)</em:translator>
-    <em:optionsURL>chrome://pastetotab/options.xul</em:optionsURL>
+    <em:optionsURL>chrome://pastetotab/content/options.xul</em:optionsURL>
     <em:iconURL>chrome://pastetotab/skin/pasteToTab-48.png</em:iconURL>
     <em:icon64URL>chrome://pastetotab/skin/pasteToTab-64.png</em:icon64URL>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
