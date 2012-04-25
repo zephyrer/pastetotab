@@ -6,7 +6,7 @@
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
     <em:name>Paste to Tab and Go</em:name>
-    <em:version>0.7a2012042601</em:version>
+    <em:version>0.7a2012042602</em:version>
     <em:description>Paste URL or text to a tab or a new tab and load the URL or search for the text immediately.</em:description>
     <em:creator>LouCypher</em:creator>
     <em:contributor>Clipboard icon: Double-J Design &lt;http://www.doublejdesign.co.uk/&gt;</em:contributor>
@@ -14,7 +14,7 @@
     <em:translator>ДакСРБИЈА (sr)</em:translator>
     <em:translator>Wang.H.K (zh-CN)</em:translator>
     <em:optionsType>2</em:optionsType>
-    <em:optionsURL>chrome://pastetotab/content/options.xul</em:optionsURL>
+    <em:optionsURL>chrome://pastetotab/content/settings.xul</em:optionsURL>
     <em:iconURL>chrome://pastetotab/skin/pasteToTab-48.png</em:iconURL>
     <em:icon64URL>chrome://pastetotab/skin/pasteToTab-64.png</em:icon64URL>
     <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
