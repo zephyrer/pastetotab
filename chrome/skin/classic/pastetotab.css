@@ -1,24 +1,26 @@
+/* Hide the template */
 #template-paste-to-new-tab-and-go,
 #template-paste-to-new-tab-and-search,
+/* Don't display these menuitems on secondary browser window */
 #main-window:not([chromehidden=""]) #urlbar-paste-text-and-go,
 #main-window:not([chromehidden=""]) #urlbar-paste-to-new-tab-and-go {
   display: none;
 }
 
+/* Menuitem iconic */
 #ToolsPopup_paste-to-tab-options,
 #appmenu_paste-to-tab-options {
   list-style-image: url("pasteToTab-16.png");
   -moz-image-region: rect(0px, 16px, 16px, 0px);
 }
 
+/* Resize about dialog */
 #genericAbout[title*="Paste to Tab and Go"] {
   min-height: 300px !important;
 }
-
 #genericAbout[title*="Paste to Tab and Go"] #extensionDetailsBox {
   min-height: 200px !important;
 }
-
 #genericAbout[title*="Paste to Tab and Go"] .text-link {
   border-width: 0 !important;
 }
