@@ -37,7 +37,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Thank you for installing Paste to Tab and Go</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <script type="application/javascript"><![CDATA[
   Components.utils.import("resource://gre/modules/Services.jsm");
@@ -48,3 +47,39 @@
 </head>
 <body></body>
 </html>
+
+<!--
+<!DOCTYPE page SYSTEM "../locale/">
+
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      id="about-pastetotab">
+
+  <browser id="content-browser" type="content" src="" flex="1"
+           contextmenu="contentAreaContextMenu"
+           tooltip="aHTMLTooltip"
+           contentcontextmenu="contentAreaContextMenu"
+           contenttooltip="aHTMLTooltip"
+           persist="cachedurl"
+           cachedurl=""
+           disablehistory="true"
+           clickthrough="never"
+           onclick="return window.parent.contentAreaClick(event, false);"/>
+
+  <script type="application/javascript"><![CDATA[
+    Components.utils.import("resource://gre/modules/Services.jsm");
+    var url = Services.urlFormatter.formatURL(
+              Services.prefs.getCharPref(
+                             "extensions.pastetotab.contributionURL"));
+    var browser = document.getElementById("content-browser");
+    browser.setAttribute("src", url);
+    browser.setAttribute("cachedurl", url);
+    browser.addEventListener("load", function(e) {
+      e.currentTarget.removeEventListener(e.type, arguments.callee, false);
+      var target = e.originalTarget;
+      target.ownerDocument.title = target.contentDocument.title;
+    }, true);
+
+  ]]></script>
+
+</page>
+-->
