@@ -74,7 +74,8 @@ var PasteToTab = {
       index++;
     }
     openDialog("chrome://pastetotab/content/options.xul", winName,
-               "chrome, dialog, close, titlebar, centerscreen, resizable");
+               "chrome, dialog, close, titlebar, "
+             + "centerscreen, resizable, minimizable");
   },
 
   // Get and return 'Paste & Go' menuitem on URL Bar context menu
