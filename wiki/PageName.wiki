@@ -1,4 +1,0 @@
-#summary User's supports.
-#labels Support
-
-Report any issues or post feature requests here.
