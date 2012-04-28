@@ -48,7 +48,9 @@
 <body></body>
 </html>
 
-<!--
+<!-- Using the above code until I figure out how to make
+     the following code be able to open links in top window
+
 <!DOCTYPE page SYSTEM "../locale/">
 
 <page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -67,9 +69,10 @@
 
   <script type="application/javascript"><![CDATA[
     Components.utils.import("resource://gre/modules/Services.jsm");
-    var url = Services.urlFormatter.formatURL(
-              Services.prefs.getCharPref(
-                             "extensions.pastetotab.contributionURL"));
+    var formatURL = Services.urlFormatter.formatURL;
+    var pref = Services.prefs
+                       .getCharPref("extensions.pastetotab.contributionURL")
+    var url = formatURL(pref);
     var browser = document.getElementById("content-browser");
     browser.setAttribute("src", url);
     browser.setAttribute("cachedurl", url);
@@ -78,7 +81,6 @@
       var target = e.originalTarget;
       target.ownerDocument.title = target.contentDocument.title;
     }, true);
-
   ]]></script>
 
 </page>

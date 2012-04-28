@@ -35,13 +35,23 @@
 -->
 
 <?xml-stylesheet href="chrome://global/skin/"?>
+<?xml-stylesheet href="chrome://pastetotab/skin/"?>
 
-<!DOCTYPE overlay SYSTEM "../locale/">
+<!DOCTYPE prefwindow [
+<!ENTITY % optionsDTD SYSTEM "../locale/">
+%optionsDTD;
+<!ENTITY % extensionsDTD SYSTEM
+           "chrome://mozapps/locale/extensions/extensions.dtd">
+%extensionsDTD;
+]>
 
 <prefwindow
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   id="pastetotab-options"
-  title="&options.title;">
+  title="&options.title;"
+  buttons="extra2, accept, cancel"
+  buttonlabelextra2="&cmd.contribute.label;"
+  ondialogextra2="window.opener.PasteToTab.contribute(); window.close();">
 
   <prefpane id="prefpane">
 
