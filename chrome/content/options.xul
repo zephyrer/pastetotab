@@ -51,7 +51,8 @@
   title="&options.title;"
   buttons="extra2, accept, cancel"
   buttonlabelextra2="&cmd.contribute.label;"
-  ondialogextra2="window.opener.PasteToTab.contribute(); window.close();">
+  onload="centerWindowOnScreen();"
+  ondialogextra2="window.opener.PasteToTab.contribute(); window.minimize();">
 
   <prefpane id="prefpane">
 
