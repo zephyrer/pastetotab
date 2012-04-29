@@ -35,14 +35,14 @@
 -->
 
 <?xml-stylesheet href="chrome://global/skin/"?>
-<?xml-stylesheet href="chrome://pastetotab/skin/"?>
+<?xml-stylesheet href="../skin/"?>
 
 <!DOCTYPE prefwindow [
-<!ENTITY % optionsDTD SYSTEM "../locale/">
-%optionsDTD;
-<!ENTITY % extensionsDTD SYSTEM
-           "chrome://mozapps/locale/extensions/extensions.dtd">
-%extensionsDTD;
+  <!ENTITY % optionsDTD SYSTEM "../locale/">
+  %optionsDTD;
+  <!ENTITY % extensionsDTD SYSTEM
+             "chrome://mozapps/locale/extensions/extensions.dtd">
+  %extensionsDTD;
 ]>
 
 <prefwindow
@@ -52,7 +52,24 @@
   buttons="extra2, accept, cancel"
   buttonlabelextra2="&cmd.contribute.label;"
   onload="centerWindowOnScreen();"
-  ondialogextra2="window.opener.PasteToTab.contribute(); window.minimize();">
+  ondialogextra2="contribute(); minimize();">
+
+  <script type="application/x-javascript"
+          src="chrome://browser/content/utilityOverlay.js"/>
+
+  <script type="application/x-javascript"><![CDATA[
+    function contribute() {
+      var mainWin = Services.wm.getMostRecentWindow("navigator:browser");
+      if (mainWin) {
+        mainWin.PasteToTab.contribute();
+        return;
+      }
+      var url = Services.urlFormatter.formatURL(
+                Services.prefs.getCharPref(
+                "extensions.pastetotab.contributionURL"));
+      openLinkIn(url, "window", {});
+    }
+  ]]></script>
 
   <prefpane id="prefpane">
 
