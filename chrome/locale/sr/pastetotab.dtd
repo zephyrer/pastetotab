@@ -1,9 +1,13 @@
 <!ENTITY menuitem.PasteToThisTab          "Налепи на језичак и иди">
 <!ENTITY menuitem.PasteToNewTab           "Налепи на нови језичак и иди">
 <!ENTITY menuitem.PasteToNewTab.search    "Налепи на нови језичак и тражи">
-<!ENTITY menuitem.PasteText               "Paste Text &amp; Go">
-<!ENTITY options.title                    "Paste to Tab and Go Options">
-<!ENTITY options.urlbar                   "Location Bar Context Menu">
-<!ENTITY options.tab                      "Tab Context Menu">
-<!ENTITY options.tabbar                   "Tab Bar Context Menu">
-<!ENTITY options.searchbar                "Search Bar Context Menu">
+<!ENTITY menuitem.PasteText               "налепи текст и иди">
+<!ENTITY options.title                    "Paste to Tab and Go - опције">
+<!ENTITY options.urlbar                   "Приручни мени траке са адресом">
+<!ENTITY options.tab                      "Приручни мени језичака">
+<!ENTITY options.tabbar                   "Приручни мени траке са језичцима">
+<!ENTITY options.searchbar                "Приручни мени траке а претраживање">
+<!ENTITY options.focusTab                 "Switch to new tab">
+<!ENTITY options.focusTab.browser         "Use browser tab setting">
+<!ENTITY options.focusTab.true            "Yes">
+<!ENTITY options.focusTab.false           "No">

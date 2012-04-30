@@ -240,10 +240,17 @@ var PasteToTab = {
   // Load URL or search the web for text into a new tab
   go: function pasteToTab_go(aURL) {
     var string = aURL ? aURL : this.clipboard;
+    var focusTab;
+    switch (this.prefs.getIntPref("focusTab")) {
+      case 0: focusTab = false; break;
+      case 1: focusTab = true; break;
+      default:
+        focusTab = !Services.prefs.getBoolPref("browser.tabs.loadInBackground");
+    }
     /* Syntax: loadOneTab(aURI, aReferrerURI, aCharset, aPostData,
                           aLoadInBackground, aAllowThirdPartyFixup)
        If aURI is empty, load a new blank tab */
-    this.browser.loadOneTab(string, null, null, null, null, true);
+    this.browser.loadOneTab(string, null, null, null, !focusTab, true);
   },
 
   // Search the web for text on new tab

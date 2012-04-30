@@ -68,4 +68,14 @@
            desc="&options.tabbar;"
            title="&menuitem.PasteToNewTab;"/>
 
+  <setting pref="extensions.pastetotab.focusTab"
+           type="radio"
+           title="&options.focusTab;">
+    <radiogroup>
+      <radio value="2" label="&options.focusTab.browser;"/>
+      <radio value="1" label="&options.focusTab.true;"/>
+      <radio value="0" label="&options.focusTab.false;"/>
+    </radiogroup>
+  </setting>
+
 </vbox>
