@@ -51,7 +51,6 @@
   title="&options.title;"
   buttons="extra2, accept, cancel"
   buttonlabelextra2="&cmd.contribute.label;"
-  onload="centerWindowOnScreen();"
   ondialogextra2="contribute(); minimize();">
 
   <script type="application/x-javascript"
@@ -94,6 +93,10 @@
         id="searchbar-pasteToNewTabAndSearch"
         name="extensions.pastetotab.searchbar.pasteToNewTabAndSearch"
         type="bool"/>
+      <preference
+        id="tab-focusTab"
+        name="extensions.pastetotab.focusTab"
+        type="int"/>
     </preferences>
 
     <hbox>
@@ -126,6 +129,17 @@
         </groupbox>
       </vbox>
     </hbox>
+
+    <groupbox>
+      <caption label="&options.focusTab;"/>
+      <radiogroup id="focusTab" preference="tab-focusTab"
+                  orient="horizontal">
+        <radio value="2" label="&options.focusTab.browser;"/>
+        <radio value="1" label="&options.focusTab.true;"/>
+        <radio value="0" label="&options.focusTab.false;"/>
+      </radiogroup>
+    </groupbox>
+
   </prefpane>
 
 </prefwindow>
