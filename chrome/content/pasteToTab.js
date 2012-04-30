@@ -269,7 +269,7 @@ var PasteToTab = {
 
   // Load donation page
   contribute: function pasteToTab_contribute() {
-    gBrowser.loadOneTab(this.contributionURL, null, null, null, false);
+    switchToTabHavingURI(this.contributionURL, true);
   },
 
   /* Disable 'Paste to Tab & Go' menuitem on tab context menu
