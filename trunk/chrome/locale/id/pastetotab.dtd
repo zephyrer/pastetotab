@@ -8,6 +8,6 @@
 <!ENTITY options.tabbar                   "Tab Bar Context Menu">
 <!ENTITY options.searchbar                "Search Bar Context Menu">
 <!ENTITY options.focusTab                 "Pilih tab baru">
-<!ENTITY options.focusTab.browser         "Gunakan aturan tab perambah">
+<!ENTITY options.focusTab.browser         "Gunakan aturan tab peramban">
 <!ENTITY options.focusTab.true            "Ya">
 <!ENTITY options.focusTab.false           "Tidak">
