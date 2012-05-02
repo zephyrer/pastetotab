@@ -56,6 +56,9 @@
   <script type="application/x-javascript"
           src="chrome://browser/content/utilityOverlay.js"/>
 
+  <script type="application/x-javascript"
+          src="chrome://communicator/content/utilityOverlay.js"/>
+
   <script type="application/x-javascript"><![CDATA[
     function contribute() {
       var mainWin = Services.wm.getMostRecentWindow("navigator:browser");
