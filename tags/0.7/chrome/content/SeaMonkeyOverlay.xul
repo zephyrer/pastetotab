@@ -66,8 +66,7 @@
               tooltiptext=""
               onmouseover="PasteToTab.updateText(this);"
               onmouseout="PasteToTab.updateText(this, '');"
-              oncommand="goDoCommand('cmd_paste');
- gURLBar.handleCommand();"/>
+              oncommand="goDoCommand('cmd_paste'); handleURLBarCommand();"/>
     <menuitem id="template-paste-to-new-tab-and-go"
               hidden="true"
               label="&menuitem.PasteToNewTab;"
