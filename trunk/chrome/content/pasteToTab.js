@@ -320,8 +320,11 @@ var PasteToTab = {
 
     // Hide menuitem if pref is false
     if (aEvent && (aEvent.target.id == "toolbar-context-menu")) {
+      var popupNode = ("triggerNode" in aEvent.target)
+                          ? aEvent.target.triggerNode
+                          : document.popupNode;
       node.hidden = !(this.getBoolPref(aPrefString) &&
-                      (document.popupNode.id == "tabbrowser-tabs"))
+                      (popupNode.id == "tabbrowser-tabs"))
     } else {
       node.hidden = !this.getBoolPref(aPrefString);
     }
