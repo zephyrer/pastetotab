@@ -51,27 +51,10 @@
   title="&options.title;"
   buttons="extra2, accept, cancel"
   buttonlabelextra2="&cmd.contribute.label;"
-  ondialogextra2="contribute(); minimize();">
+  ondialogextra2="contribute(); minimize();"
+  onload="load();">
 
-  <script type="application/x-javascript"
-          src="chrome://browser/content/utilityOverlay.js"/>
-
-  <script type="application/x-javascript"
-          src="chrome://communicator/content/utilityOverlay.js"/>
-
-  <script type="application/x-javascript"><![CDATA[
-    function contribute() {
-      var mainWin = Services.wm.getMostRecentWindow("navigator:browser");
-      if (mainWin) {
-        mainWin.PasteToTab.contribute();
-        return;
-      }
-      var url = Services.urlFormatter.formatURL(
-                Services.prefs.getCharPref(
-                "extensions.pastetotab.contributionURL"));
-      openLinkIn(url, "window", {});
-    }
-  ]]></script>
+  <script type="application/x-javascript" src="options.js"/>
 
   <prefpane id="prefpane">
 
