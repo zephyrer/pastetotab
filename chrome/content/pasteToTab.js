@@ -62,20 +62,15 @@ var PasteToTab = {
 
   // Open the options dialog
   options: function pasteToTab_options() {
-    var winName = "pastetotab-options";
-    var wenum = Services.ww.getWindowEnumerator();
-    var index = 1;
-    while (wenum.hasMoreElements()) {
-      var win = wenum.getNext();
-      if (win.name == winName) {
-        win.focus();
-        return;
-      }
-      index++;
+    var win = Services.wm.getMostRecentWindow("PasteToTab:Preferences");
+    if (win) {
+      win.focus();
+      return;
     }
-    openDialog("chrome://pastetotab/content/options.xul", winName,
-               "chrome, dialog, close, titlebar, "
-             + "centerscreen, resizable, minimizable");
+    openDialog("chrome://pastetotab/content/options.xul",
+               "pastetotab-options",
+               "chrome, dialog, close, titlebar, centerscreen,"
+             + "resizable, minimizable");
   },
 
   // Get and return 'Paste & Go' menuitem on URL Bar context menu

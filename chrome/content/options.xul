@@ -49,6 +49,7 @@
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   id="pastetotab-options"
   title="&options.title;"
+  windowtype="PasteToTab:Preferences"
   buttons="extra2, accept, cancel"
   buttonlabelextra2="&cmd.contribute.label;"
   ondialogextra2="contribute(); minimize();"
