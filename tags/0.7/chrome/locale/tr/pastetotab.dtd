@@ -1,0 +1,9 @@
+<!ENTITY menuitem.PasteToThisTab          "Bu Sekmeye Yapıştır &amp; Git">
+<!ENTITY menuitem.PasteToNewTab           "Yeni Sekmeye Yapıştır &amp; Git">
+<!ENTITY menuitem.PasteToNewTab.search    "Yeni Sekmeye Yapıştır &amp; Araştır">
+<!ENTITY menuitem.PasteText               "Yazıyı Yapıştır &amp; Git">
+<!ENTITY options.title                    "Sekmeye yapıştır ve ayarlara gir">
+<!ENTITY options.urlbar                   "Adres çubuğu içerik menüsü">
+<!ENTITY options.tab                      "Sekme içerik menüsü">
+<!ENTITY options.tabbar                   "Sekme çubuğu içerik menüsü">
+<!ENTITY options.searchbar                "Arama çubuğu içerik menüsü">

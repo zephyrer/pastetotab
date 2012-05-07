@@ -4,6 +4,7 @@ locale    pastetotab        en-US                       chrome/locale/en-US/
 locale    pastetotab        id                          chrome/locale/id/
 locale    pastetotab        nl                          chrome/locale/nl/
 locale    pastetotab        sr                          chrome/locale/sr/
+locale    pastetotab        tr                          chrome/locale/tr/
 locale    pastetotab        zh-CN                       chrome/locale/zh-CN/
 
 overlay   chrome://browser/content/browser.xul          chrome://pastetotab/content/FirefoxOverlay.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
