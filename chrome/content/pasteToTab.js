@@ -18,7 +18,7 @@
     the Initial Developer. All Rights Reserved.
 
     Contributor(s):
-      LouCypher <me@loucypher.mp>
+    - LouCypher <me@loucypher.mp>
 
     Alternatively, the contents of this file may be used under the terms
     of either the GNU General Public License Version 2 or later (the "GPL"),
@@ -62,15 +62,20 @@ var PasteToTab = {
 
   // Open the options dialog
   options: function pasteToTab_options() {
-    var win = Services.wm.getMostRecentWindow("PasteToTab:Preferences");
-    if (win) {
-      win.focus();
-      return;
+    var winName = "pastetotab-options";
+    var wenum = Services.ww.getWindowEnumerator();
+    var index = 1;
+    while (wenum.hasMoreElements()) {
+      var win = wenum.getNext();
+      if (win.name == winName) {
+        win.focus();
+        return;
+      }
+      index++;
     }
-    openDialog("chrome://pastetotab/content/options.xul",
-               "pastetotab-options",
-               "chrome, dialog, close, titlebar, centerscreen,"
-             + "resizable, minimizable");
+    openDialog("chrome://pastetotab/content/options.xul", winName,
+               "chrome, dialog, close, titlebar, "
+             + "centerscreen, resizable, minimizable");
   },
 
   // Get and return 'Paste & Go' menuitem on URL Bar context menu
@@ -235,17 +240,10 @@ var PasteToTab = {
   // Load URL or search the web for text into a new tab
   go: function pasteToTab_go(aURL) {
     var string = aURL ? aURL : this.clipboard;
-    var focusTab;
-    switch (this.prefs.getIntPref("focusTab")) {
-      case 0: focusTab = false; break;
-      case 1: focusTab = true; break;
-      default:
-        focusTab = !Services.prefs.getBoolPref("browser.tabs.loadInBackground");
-    }
     /* Syntax: loadOneTab(aURI, aReferrerURI, aCharset, aPostData,
                           aLoadInBackground, aAllowThirdPartyFixup)
        If aURI is empty, load a new blank tab */
-    this.browser.loadOneTab(string, null, null, null, !focusTab, true);
+    this.browser.loadOneTab(string, null, null, null, null, true);
   },
 
   // Search the web for text on new tab
@@ -324,11 +322,8 @@ var PasteToTab = {
 
     // Hide menuitem if pref is false
     if (aEvent && (aEvent.target.id == "toolbar-context-menu")) {
-      var popupNode = ("triggerNode" in aEvent.target)
-                          ? aEvent.target.triggerNode
-                          : document.popupNode;
       node.hidden = !(this.getBoolPref(aPrefString) &&
-                      (popupNode.id == "tabbrowser-tabs"))
+                      (document.popupNode.id == "tabbrowser-tabs"))
     } else {
       node.hidden = !this.getBoolPref(aPrefString);
     }
