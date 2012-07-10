@@ -1,0 +1,27 @@
+content   pastetotab                                    chrome/content/
+skin      pastetotab        classic/1.0                 chrome/skin/classic/
+locale    pastetotab        en-US                       chrome/locale/en-US/
+locale    pastetotab        fr                          chrome/locale/fr/
+locale    pastetotab        id                          chrome/locale/id/
+locale    pastetotab        nl                          chrome/locale/nl/
+locale    pastetotab        sr                          chrome/locale/sr/
+locale    pastetotab        tr                          chrome/locale/tr/
+locale    pastetotab        zh-CN                       chrome/locale/zh-CN/
+
+overlay   chrome://browser/content/browser.xul          chrome://pastetotab/content/FirefoxOverlay.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+overlay   chrome://navigator/content/navigator.xul      chrome://pastetotab/content/SeaMonkeyOverlay.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
+overlay   chrome://global/content/customizeToolbar.xul  chrome://pastetotab/content/customizeToolbarOverlay.xul
+
+#Backward compatibility for inline settings
+#https://developer.mozilla.org/en/Extensions/Inline_Options
+override  chrome://pastetotab/content/settings.xul      chrome://pastetotab/content/options.xul application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} appversion<=6.*
+override  chrome://pastetotab/content/settings.xul      chrome://pastetotab/content/options.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a} appversion<=2.3
+
+style     chrome://mozapps/content/extensions/about.xul chrome://pastetotab/skin/
+style     chrome://pastetotab/content/options.xul       chrome://pastetotab/skin/settings.css application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
+style     about:addons                                  chrome://pastetotab/skin/settings.css application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
+
+#About protocol
+#https://developer.mozilla.org/En/Custom_about:_URLs#For_Firefox_4
+component {7a430414-917e-47d0-aa57-464e8d402acc}        components/aboutPasteToTab.js
+contract  @mozilla.org/network/protocol/about;1?what=pastetotab {7a430414-917e-47d0-aa57-464e8d402acc}

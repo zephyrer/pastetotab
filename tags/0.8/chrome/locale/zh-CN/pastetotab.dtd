@@ -1,0 +1,13 @@
+<!ENTITY menuitem.PasteToThisTab          "粘贴到此标签并转到">
+<!ENTITY menuitem.PasteToNewTab           "粘贴到新标签并转到">
+<!ENTITY menuitem.PasteToNewTab.search    "粘贴到新标签并搜索">
+<!ENTITY menuitem.PasteText               "粘贴文本并转到">
+<!ENTITY options.title                    "Paste to Tab and Go 选项">
+<!ENTITY options.urlbar                   "地址栏上下文菜单">
+<!ENTITY options.tab                      "标签上下文菜单">
+<!ENTITY options.tabbar                   "标签栏上下文菜单">
+<!ENTITY options.searchbar                "搜索栏上下文菜单">
+<!ENTITY options.focusTab                 "Switch to new tab">
+<!ENTITY options.focusTab.browser         "Use browser tab setting">
+<!ENTITY options.focusTab.true            "Yes">
+<!ENTITY options.focusTab.false           "No">
