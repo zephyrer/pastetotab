@@ -18,7 +18,7 @@
     the Initial Developer. All Rights Reserved.
 
     Contributor(s):
-    - LouCypher <me@loucypher.mp>
+      LouCypher <loucypher@mozillaca.com>
 
     Alternatively, the contents of this file may be used under the terms
     of either the GNU General Public License Version 2 or later (the "GPL"),
@@ -299,8 +299,12 @@ var PasteToTab = {
 
   // Get and return contribution URL from pref
   get contributionURL() {
-    return Services.urlFormatter
-                   .formatURL(this.prefs.getCharPref("contributionURL"));
+    var url = Services.urlFormatter
+                      .formatURL(this.prefs.getCharPref("contributionURL"));
+    if (!/(firefox|seamonkey)\/addon/.test(url)) {
+      url = url.replace(/\w+\/addon/, "firefox/addon");
+    }
+    return url;
   },
 
   // Load donation page
