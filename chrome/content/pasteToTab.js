@@ -18,7 +18,7 @@
     the Initial Developer. All Rights Reserved.
 
     Contributor(s):
-    - LouCypher <me@loucypher.mp>
+      LouCypher <loucypher@mozillaca.com>
 
     Alternatively, the contents of this file may be used under the terms
     of either the GNU General Public License Version 2 or later (the "GPL"),
@@ -41,8 +41,10 @@ var PasteToTab = {
     return "Paste to Tab and Go";
   },
 
+  PREF_ROOT: "extensions.pastetotab.",
+
   get prefs() {
-    return Services.prefs.getBranch("extensions.pastetotab.");
+    return Services.prefs.getBranch(this.PREF_ROOT);
   },
 
   getBoolPref: function pasteToTab_prefs_getBoolPref(aPrefString) {
@@ -235,17 +237,18 @@ var PasteToTab = {
   // Load URL or search the web for text into a new tab
   go: function pasteToTab_go(aURL) {
     var string = aURL ? aURL : this.clipboard;
-    var focusTab;
+
+    var backgroundTab;
     switch (this.prefs.getIntPref("focusTab")) {
-      case 0: focusTab = false; break;
-      case 1: focusTab = true; break;
-      default:
-        focusTab = !Services.prefs.getBoolPref("browser.tabs.loadInBackground");
+      case 0: backgroundTab = false; break;
+      case 1: backgroundTab = true; break;
+      default: backgroundTab = null;
     }
+
     /* Syntax: loadOneTab(aURI, aReferrerURI, aCharset, aPostData,
                           aLoadInBackground, aAllowThirdPartyFixup)
        If aURI is empty, load a new blank tab */
-    this.browser.loadOneTab(string, null, null, null, !focusTab, true);
+    this.browser.loadOneTab(string, null, null, null, backgroundTab, true);
   },
 
   // Search the web for text on new tab
@@ -300,7 +303,7 @@ var PasteToTab = {
   // Get and return contribution URL from pref
   get contributionURL() {
     var url = Services.urlFormatter
-                      .formatURL(this.prefs.getCharPref("contributionURL"));
+                      .formatURLPref(this.PREF_ROOT + "contributionURL");
     if (!/(firefox|seamonkey)\/addon/.test(url)) {
       url = url.replace(/\w+\/addon/, "firefox/addon");
     }
