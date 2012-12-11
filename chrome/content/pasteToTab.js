@@ -140,19 +140,19 @@ var PasteToTab = {
 
     var pi = this.pasteAndGo;
     if (pi) {
-      pi.addEventListener("mouseover", ptt1_mouseover = function(e) {
+      pi.addEventListener("mouseenter", ptt1_mouseenter = function(e) {
         PasteToTab.updateText(e.target);
       }, false);
-      pi.addEventListener("mouseout", ptt1_mouseout = function(e) {
+      pi.addEventListener("mouseleave", ptt1_mouseleave = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
 
       pi.previousSibling
-        .addEventListener("mouseover", ptt2_mouseover = function(e) {
+        .addEventListener("mouseenter", ptt2_mouseenter = function(e) {
         PasteToTab.updateText(e.target);
       }, false);
       pi.previousSibling
-        .addEventListener("mouseout", ptt2_mouseout = function(e) {
+        .addEventListener("mouseleave", ptt2_mouseleave = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
 
@@ -188,19 +188,19 @@ var PasteToTab = {
     this.debug("Paste & Search = " + pi);
 
     if (pi) {
-      pi.addEventListener("mouseover", ptt3_mouseover = function(e) {
+      pi.addEventListener("mouseenter", ptt3_mouseenter = function(e) {
         PasteToTab.updateText(e.target);
       }, false);
-      pi.addEventListener("mouseout", ptt3_mouseout = function(e) {
+      pi.addEventListener("mouseleave", ptt3_mouseleave = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
 
       pi.previousSibling
-        .addEventListener("mouseover", ptt4_mouseover = function(e) {
+        .addEventListener("mouseenter", ptt4_mouseenter = function(e) {
         PasteToTab.updateText(e.target);
       }, false);
       pi.previousSibling
-        .addEventListener("mouseout", ptt4_mouseout = function(e) {
+        .addEventListener("mouseleave", ptt4_mouseleave = function(e) {
         PasteToTab.updateText(e.target, "");
       }, false);
 
