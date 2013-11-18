@@ -40,9 +40,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <script type="application/javascript"><![CDATA[
   Components.utils.import("resource://gre/modules/Services.jsm");
-  location.replace(Services.urlFormatter.formatURL(
-                   Services.prefs.getCharPref(
-                   "extensions.pastetotab.contributionURL")));
+  var url = Services.urlFormatter.formatURLPref("extensions.pastetotab.contributionURL");
+  if (!/(firefox|seamonkey)\/addon/.test(url)) {
+    url = url.replace(/[^\/]+\/addon/, "firefox/addon");
+  }
+  location.replace(url);
 ]]></script>
 </head>
 <body></body>

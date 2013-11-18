@@ -302,12 +302,7 @@ var PasteToTab = {
 
   // Get and return contribution URL from pref
   get contributionURL() {
-    var url = Services.urlFormatter
-                      .formatURLPref(this.PREF_ROOT + "contributionURL");
-    if (!/(firefox|seamonkey)\/addon/.test(url)) {
-      url = url.replace(/\w+\/addon/, "firefox/addon");
-    }
-    return url;
+    return Services.urlFormatter.formatURLPref(this.PREF_ROOT + "contributionURL");
   },
 
   // Load donation page
