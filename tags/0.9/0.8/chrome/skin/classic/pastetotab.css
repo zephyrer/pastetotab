@@ -1,0 +1,59 @@
+/* Hide the template */
+#template-paste-to-new-tab-and-go,
+#template-paste-to-new-tab-and-search,
+/* Don't display these menuitems on secondary browser window */
+#main-window:not([chromehidden=""]) #urlbar-paste-text-and-go,
+#main-window:not([chromehidden=""]) #urlbar-paste-to-new-tab-and-go {
+  display: none;
+}
+
+/* Menuitem iconic */
+#ToolsPopup_paste-to-tab-options,
+#appmenu_paste-to-tab-options {
+  list-style-image: url("pasteToTab-16.png");
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+}
+
+/* Resize about dialog */
+#genericAbout[title*="Paste to Tab and Go"] { min-height: 300px !important; }
+#genericAbout[title*="Paste to Tab and Go"] #extensionDetailsBox {
+  min-height: 200px !important;
+}
+#genericAbout[title*="Paste to Tab and Go"] .text-link {
+  border-width: 0 !important;
+}
+
+/* 'Contribute' button in options dialog */
+button[dlgtype="extra2"] {
+  -moz-appearance: none;
+  color: #FFF;
+  border: 1px solid #3A4EEE;
+  border-radius: 3px;
+  list-style-image: url("chrome://mozapps/skin/extensions/heart.png");
+  background-color: #2F73EF;
+  background-image: -moz-linear-gradient(rgba(251, 252, 253, 0.70),
+                                         rgba(246, 247, 248, 0.27) 49%,
+                                         rgba(231, 232, 233, 0.25) 51%,
+                                         rgba(225, 226, 229, 0.1));
+}
+button[dlgtype="extra2"] .button-box { padding: 0 6px 1px 6px; }
+button[dlgtype="extra2"] .button-icon { -moz-margin-end: 3px; }
+button[dlgtype="extra2"]:not(:active):hover {
+  border-color: #4271FF;
+  background-color: #0459F7;
+       box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 0 3.5px hsl(190, 90%, 80%);
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 0 3.5px hsl(190, 90%, 80%);
+  -moz-transition: background-color .4s ease-in,
+                   border-color .3s ease-in,
+                   box-shadow .3s ease-in
+}
+button[dlgtype="extra2"]:active:hover {
+  background-color: #8FA1C1;
+  border-color: rgba(0, 0, 0, 0.65) rgba(0, 0, 0, 0.55) rgba(0, 0, 0, 0.5);
+       box-shadow: 0 0 6.5px rgba(0, 0, 0, 0.4) inset,
+                   0 0 2px rgba(0, 0, 0, 0.4) inset,
+                   0 1px 0 rgba(255, 255, 255, 0.4);
+  -moz-box-shadow: 0 0 6.5px rgba(0, 0, 0, 0.4) inset,
+                   0 0 2px rgba(0, 0, 0, 0.4) inset,
+                   0 1px 0 rgba(255, 255, 255, 0.4);
+}

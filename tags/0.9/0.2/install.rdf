@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>pastetotab@loucypher</em:id>
+    <em:name>Paste to Tab and Go</em:name>
+    <em:version>0.2</em:version>
+    <em:description>Paste a string to tab and load it.</em:description>
+    <em:creator>LouCypher</em:creator>
+    <em:homepageURL>http://zoolcar9.lhukie.net/extensions/</em:homepageURL>
+
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>3.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Flock -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{a463f10c-3994-11da-9945-000d60ca027b}</em:id>
+        <em:minVersion>0.7</em:minVersion>
+        <em:maxVersion>1.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Netscape -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{3db10fab-e461-4c80-8b97-957ad5f8ea47}</em:id>
+        <em:minVersion>9.0a</em:minVersion>
+        <em:maxVersion>9.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Songbird -->
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>0.4</em:minVersion>
+        <em:maxVersion>0.5.*</em:maxVersion>
+      </Description>
+   </em:targetApplication>
+
+    <!-- eMusic Remote -->
+    <em:targetApplication>
+      <Description>
+        <em:id>dlm@emusic.com</em:id>
+        <em:minVersion>1.0</em:minVersion>
+        <em:maxVersion>1.0.0.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+  </Description>
+</RDF>
+

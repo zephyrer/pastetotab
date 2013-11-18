@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>pastetotab@loucypher</em:id>
+    <em:name>Paste to Tab and Go</em:name>
+    <em:version>0.3.1</em:version>
+    <em:description>Paste URL/text to a tab/new tab and load/search it immediately.</em:description>
+    <em:creator>LouCypher</em:creator>
+    <em:homepageURL>http://pastetotab.googlecode.com/</em:homepageURL>
+
+    <!-- Firefox -->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+        <em:minVersion>3.0</em:minVersion>
+        <em:maxVersion>3.5.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+  </Description>
+</RDF>
+
