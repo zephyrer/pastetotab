@@ -1,9 +1,0 @@
-<!ENTITY menuitem.PasteToThisTab "Naar dit tabblad plakken &amp; Gaan">
-<!ENTITY menuitem.PasteToNewTab "Naar nieuw tabblad plakken &amp; Gaan">
-<!ENTITY menuitem.PasteToNewTab.search "Naar nieuw tabblad plakken &amp; Zoeken">
-<!ENTITY menuitem.PasteText "Tekst plakken &amp; Gaan">
-<!ENTITY options.title "Paste to Tab and Go-opties">
-<!ENTITY options.urlbar "Locatiebalk-contextmenu">
-<!ENTITY options.tab "Tabbladcontextmenu">
-<!ENTITY options.tabbar "Tabbalkcontextmenu">
-<!ENTITY options.searchbar "Zoekbalkcontextmenu">
