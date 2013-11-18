@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<script type="application/javascript"><![CDATA[
+  Components.utils.import("resource://gre/modules/Services.jsm");
+  location.replace(Services.urlFormatter.formatURL(
+                   Services.prefs.getCharPref(
+                   "extensions.pastetotab.contributionURL")));
+]]></script>
+</head>
+<body></body>
+</html>
+
+<!-- Using the above code until I figure out how to make
+     the following code be able to open links in top window
+
+<!DOCTYPE page SYSTEM "../locale/">
+
+<page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      id="about-pastetotab">
+
+  <browser id="content-browser" type="content" src="" flex="1"
+           contextmenu="contentAreaContextMenu"
+           tooltip="aHTMLTooltip"
+           contentcontextmenu="contentAreaContextMenu"
+           contenttooltip="aHTMLTooltip"
+           persist="cachedurl"
+           cachedurl=""
+           disablehistory="true"
+           clickthrough="never"
+           onclick="return window.parent.contentAreaClick(event, false);"/>
+
+  <script type="application/javascript"><![CDATA[
+    Components.utils.import("resource://gre/modules/Services.jsm");
+    var formatURL = Services.urlFormatter.formatURL;
+    var pref = Services.prefs
+                       .getCharPref("extensions.pastetotab.contributionURL")
+    var url = formatURL(pref);
+    var browser = document.getElementById("content-browser");
+    browser.setAttribute("src", url);
+    browser.setAttribute("cachedurl", url);
+    browser.addEventListener("load", function(e) {
+      e.currentTarget.removeEventListener(e.type, arguments.callee, false);
+      var target = e.originalTarget;
+      target.ownerDocument.title = target.contentDocument.title;
+    }, true);
+  ]]></script>
+
+</page>
+-->

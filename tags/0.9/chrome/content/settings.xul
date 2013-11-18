@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
+<!DOCTYPE vbox SYSTEM "chrome://pastetotab/locale/">
+
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <setting pref="extensions.pastetotab.urlbar.pasteToNewTabAndGo"
+           type="bool"
+           class="pastetotab-urlbar-setting"
+           desc="&options.urlbar;"
+           title="&menuitem.PasteToNewTab;"/>
+
+  <setting pref="extensions.pastetotab.urlbar.pasteTextAndGo"
+           type="bool"
+           class="pastetotab-urlbar-setting"
+           desc="&options.urlbar;"
+           title="&menuitem.PasteText;"/>
+
+  <setting pref="extensions.pastetotab.searchbar.pasteToNewTabAndSearch"
+           type="bool"
+           class="pastetotab-searchbar-setting"
+           desc="&options.searchbar;"
+           title="&menuitem.PasteToNewTab.search;"/>
+
+  <setting pref="extensions.pastetotab.tab.pasteToThisTabAndGo"
+           type="bool"
+           class="pastetotab-tab-setting"
+           desc="&options.tab;"
+           title="&menuitem.PasteToThisTab;"/>
+
+  <setting pref="extensions.pastetotab.tabbar.pasteToNewTabAndGo"
+           type="bool"
+           class="pastetotab-tabbar-setting"
+           desc="&options.tabbar;"
+           title="&menuitem.PasteToNewTab;"/>
+
+  <setting pref="extensions.pastetotab.focusTab"
+           type="radio"
+           title="&options.focusTab;">
+    <radiogroup>
+      <radio value="2" label="&options.focusTab.browser;"/>
+      <radio value="1" label="&options.focusTab.true;"/>
+      <radio value="0" label="&options.focusTab.false;"/>
+    </radiogroup>
+  </setting>
+
+</vbox>

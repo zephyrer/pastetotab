@@ -1,0 +1,13 @@
+<!ENTITY menuitem.PasteToThisTab "貼上這個分頁並瀏覽">
+<!ENTITY menuitem.PasteToNewTab "貼上新分頁並瀏覽">
+<!ENTITY menuitem.PasteToNewTab.search "貼上新分頁並搜尋">
+<!ENTITY menuitem.PasteText "貼上文字並瀏覽">
+<!ENTITY options.title "Paste to Tab and Go 選項">
+<!ENTITY options.urlbar "網址列右鍵選單">
+<!ENTITY options.tab "分頁右鍵選單">
+<!ENTITY options.tabbar "分頁工具列右鍵選單">
+<!ENTITY options.searchbar "搜尋列右鍵選單">
+<!ENTITY options.focusTab "切換至新分頁">
+<!ENTITY options.focusTab.browser "使用瀏覽器的分頁設定">
+<!ENTITY options.focusTab.true "是">
+<!ENTITY options.focusTab.false "否">

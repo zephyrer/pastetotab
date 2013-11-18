@@ -1,0 +1,13 @@
+<!ENTITY menuitem.PasteToThisTab          "Paste to This Tab &amp; Go">
+<!ENTITY menuitem.PasteToNewTab           "Paste to New Tab &amp; Go">
+<!ENTITY menuitem.PasteToNewTab.search    "Paste to New Tab &amp; Search">
+<!ENTITY menuitem.PasteText               "Paste Text &amp; Go">
+<!ENTITY options.title                    "Paste to Tab and Go Options">
+<!ENTITY options.urlbar                   "Location Bar Context Menu">
+<!ENTITY options.tab                      "Tab Context Menu">
+<!ENTITY options.tabbar                   "Tab Bar Context Menu">
+<!ENTITY options.searchbar                "Search Bar Context Menu">
+<!ENTITY options.focusTab                 "Switch to new tab">
+<!ENTITY options.focusTab.browser         "Use browser tab setting">
+<!ENTITY options.focusTab.true            "Yes">
+<!ENTITY options.focusTab.false           "No">

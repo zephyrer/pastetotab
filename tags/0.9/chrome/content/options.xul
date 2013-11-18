@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
+<?xml-stylesheet href="chrome://global/skin/"?>
+<?xml-stylesheet href="../skin/"?>
+
+<!DOCTYPE prefwindow [
+  <!ENTITY % optionsDTD SYSTEM "../locale/">
+  %optionsDTD;
+  <!ENTITY % extensionsDTD SYSTEM
+             "chrome://mozapps/locale/extensions/extensions.dtd">
+  %extensionsDTD;
+]>
+
+<prefwindow
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  id="pastetotab-options"
+  title="&options.title;"
+  windowtype="PasteToTab:Preferences"
+  buttons="extra2, accept, cancel"
+  buttonlabelextra2="&cmd.contribute.label;"
+  ondialogextra2="contribute(); minimize();"
+  onload="load();">
+
+  <script type="application/x-javascript" src="options.js"/>
+
+  <prefpane id="prefpane">
+
+    <preferences>
+      <preference
+        id="urlbar-pasteToNewTabAndGo"
+        name="extensions.pastetotab.urlbar.pasteToNewTabAndGo"
+        type="bool"/>
+      <preference
+        id="urlbar-pasteTextAndGo"
+        name="extensions.pastetotab.urlbar.pasteTextAndGo"
+        type="bool"/>
+      <preference
+        id="tab-pasteToThisTabAndGo"
+        name="extensions.pastetotab.tab.pasteToThisTabAndGo"
+        type="bool"/>
+      <preference
+        id="tabbar-pasteToNewTabAndGo"
+        name="extensions.pastetotab.tabbar.pasteToNewTabAndGo"
+        type="bool"/>
+      <preference
+        id="searchbar-pasteToNewTabAndSearch"
+        name="extensions.pastetotab.searchbar.pasteToNewTabAndSearch"
+        type="bool"/>
+      <preference
+        id="tab-focusTab"
+        name="extensions.pastetotab.focusTab"
+        type="int"/>
+    </preferences>
+
+    <hbox>
+      <vbox>
+        <groupbox id="urlbar">
+          <caption label="&options.urlbar;"/>
+          <checkbox label="&menuitem.PasteToNewTab;"
+                    preference="urlbar-pasteToNewTabAndGo"/>
+          <checkbox label="&menuitem.PasteText;"
+                    preference="urlbar-pasteTextAndGo"/>
+       </groupbox>
+
+        <groupbox id="searchbar">
+          <caption label="&options.searchbar;"/>
+          <checkbox label="&menuitem.PasteToNewTab.search;"
+                    preference="searchbar-pasteToNewTabAndSearch"/>
+        </groupbox>
+      </vbox>
+      <vbox>
+        <groupbox id="tab">
+          <caption label="&options.tab;"/>
+          <checkbox label="&menuitem.PasteToThisTab;"
+                    preference="tab-pasteToThisTabAndGo"/>
+        </groupbox>
+
+        <groupbox id="tabbar">
+          <caption label="&options.tabbar;"/>
+          <checkbox label="&menuitem.PasteToNewTab;"
+                    preference="tabbar-pasteToNewTabAndGo"/>
+        </groupbox>
+      </vbox>
+    </hbox>
+
+    <groupbox>
+      <caption label="&options.focusTab;"/>
+      <radiogroup id="focusTab" preference="tab-focusTab"
+                  orient="horizontal">
+        <radio value="2" label="&options.focusTab.browser;"/>
+        <radio value="1" label="&options.focusTab.true;"/>
+        <radio value="0" label="&options.focusTab.false;"/>
+      </radiogroup>
+    </groupbox>
+
+  </prefpane>
+
+</prefwindow>

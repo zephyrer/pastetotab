@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+    Contributor(s):
+    - LouCypher (original code)
+-->
+
+<?xml-stylesheet href="../skin/"?>
+
+<!DOCTYPE overlay SYSTEM "../locale/">
+
+<overlay id="pasteToTab-browserOverlay"
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="pasteToTab.js"/>
+
+  <commandset id="mainCommandSet">
+    <command id="PasteToTab:insertMenuitems"
+             oncommand="PasteToTab.insertURLBarMenuitem();
+ window.setTimeout(function() {
+ PasteToTab.insertSearchBarMenuitem();
+ }, 1000)"/>
+  </commandset>
+
+  <menupopup id="toolbar-context-menu">
+    <menuseparator id="paste-to-tab-and-go-separator"/>
+    <menuitem id="paste-to-tab-and-go"
+              label="&menuitem.PasteToThisTab;"
+              tooltiptext=""
+              onmouseenter="PasteToTab.updateText(this);"
+              onmouseleave="PasteToTab.updateText(this, '');"
+              oncommand="PasteToTab.loadURI(gBrowser.mContextTab, event);"
+              onclick="PasteToTab.checkForClickEvent(this, event);"/>
+    <menuseparator id="paste-to-new-tab-and-go-separator"/>
+    <menuitem id="paste-to-new-tab-and-go"
+              label="&menuitem.PasteToNewTab;"
+              tooltiptext=""
+              onmouseenter="PasteToTab.updateText(this);"
+              onmouseleave="PasteToTab.updateText(this, '');"
+              oncommand="PasteToTab.go();"/>
+    <menuitem id="template-paste-text-and-go"
+              hidden="true"
+              label="&menuitem.PasteText;"
+              tooltiptext=""
+              onmouseenter="PasteToTab.updateText(this);"
+              onmouseleave="PasteToTab.updateText(this, '');"
+              oncommand="goDoCommand('cmd_paste'); handleURLBarCommand();"/>
+    <menuitem id="template-paste-to-new-tab-and-go"
+              hidden="true"
+              label="&menuitem.PasteToNewTab;"
+              tooltiptext=""
+              onmouseenter="PasteToTab.updateText(this);"
+              onmouseleave="PasteToTab.updateText(this, '');"
+              oncommand="PasteToTab.go();"/>
+    <menuitem id="template-paste-to-new-tab-and-search"
+              hidden="true"
+              label="&menuitem.PasteToNewTab.search;"
+              tooltiptext=""
+              onmouseenter="PasteToTab.updateText(this);"
+              onmouseleave="PasteToTab.updateText(this, '');"
+              oncommand="PasteToTab.search();"/>
+  </menupopup>
+
+  <menupopup id="taskPopup">
+    <menuitem id="ToolsPopup_paste-to-tab-options"
+              insertafter="cmd_switchprofile"
+              class="menuitem-iconic"
+              label="&options.title;"
+              oncommand="PasteToTab.options();"/>
+  </menupopup>
+
+</overlay>
