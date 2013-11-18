@@ -36,7 +36,7 @@
 
 var PasteToTab = {
 
-  toString: function PasteToTab_toString() {
+  toString: function pasteToTab_toString() {
     "use strict";
     return "Paste to Tab and Go";
   },
@@ -58,7 +58,7 @@ var PasteToTab = {
   // For debugging
   debug: function pasteToTab_debug(aMessages) {
     if (this.getBoolPref("debug")) {
-      Application.console.log("Paste to Tab and Go\n" + aMessages);
+      Services.console.logStringMessage("Paste to Tab and Go\n" + aMessages);
     }
   },
 
@@ -406,11 +406,24 @@ var PasteToTab = {
       req.send(null);
     }
 
-  }
+  },
+
+  onCustomize: function pasteToTab_onUnload(aEvent) {
+    PasteToTab.insertURLBarMenuitem();
+  },
+
+  onLoad: function pasteToTab_onLoad(aEvent) {
+    PasteToTab.initBrowser(aEvent);
+  },
+
+  onUnload: function pasteToTab_onUnload(aEvent) {
+    window.removeEventListener("aftercustomization", PasteToTab.onCustomize, false);
+  },
+
 }
 
-window.addEventListener("load", ptt_initBrowser = function(e) {
-  PasteToTab.initBrowser(e);
-}, false);
-
-window.removeEventListener("unload", ptt_initBrowser, false);
+window.addEventListener("load", PasteToTab.onLoad, false);
+window.addEventListener("unload", PasteToTab.onUnload, false);
+window.addEventListener("aftercustomization", PasteToTab.onCustomize, false);
+window.removeEventListener("unload", PasteToTab.onLoad, false);
+window.removeEventListener("unload", PasteToTab.onUnload, false);
