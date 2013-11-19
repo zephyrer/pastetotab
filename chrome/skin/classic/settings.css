@@ -1,5 +1,0 @@
-/* Don't display tabbar setting on SeaMonkey */
-#pastetotab-options #tabbar,
-.pastetotab-tabbar-setting {
-  display: none !important;
-}

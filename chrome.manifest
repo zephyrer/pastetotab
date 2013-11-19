@@ -18,8 +18,6 @@ override  chrome://pastetotab/content/settings.xul      chrome://pastetotab/cont
 override  chrome://pastetotab/content/settings.xul      chrome://pastetotab/content/options.xul application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a} appversion<=2.3
 
 style     chrome://mozapps/content/extensions/about.xul chrome://pastetotab/skin/
-style     chrome://pastetotab/content/options.xul       chrome://pastetotab/skin/settings.css application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
-style     about:addons                                  chrome://pastetotab/skin/settings.css application={92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}
 
 #About protocol
 #https://developer.mozilla.org/En/Custom_about:_URLs#For_Firefox_4
