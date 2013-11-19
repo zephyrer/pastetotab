@@ -15,6 +15,12 @@ var PasteToTab = {
   },
 
   PREF_ROOT: "extensions.pastetotab.",
+  FIREFOX_ID: "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}",
+  SEAMONKEY_ID: "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}",
+
+  get isSeaMonkey() {
+    return Application.id == this.SEAMONKEY_ID
+  },
 
   get prefs() {
     return Services.prefs.getBranch(this.PREF_ROOT);
@@ -53,16 +59,13 @@ var PasteToTab = {
     if (!gURLBar) return null;
     var inputBox;
     switch (Application.id) {
-      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
-        inputBox = document.getAnonymousElementByAttribute(
-                          gURLBar, "anonid", "textbox-input-box");
-        return document.getAnonymousElementByAttribute(
-                          inputBox, "anonid", "paste-and-go");
-      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
-        inputBox = document.getAnonymousElementByAttribute(
-                      gURLBar, "class", "textbox-input-box paste-and-go");
-        return document.getAnonymousElementByAttribute(
-                      inputBox, "cmd", "cmd_pasteAndGo");
+      case this.FIREFOX_ID: // Firefox
+        inputBox = document.getAnonymousElementByAttribute(gURLBar, "anonid", "textbox-input-box");
+        return document.getAnonymousElementByAttribute(inputBox, "anonid", "paste-and-go");
+      case this.SEAMONKEY_ID: // SeaMonkey
+        inputBox = document.getAnonymousElementByAttribute(gURLBar, "class",
+                                                           "textbox-input-box paste-and-go");
+        return document.getAnonymousElementByAttribute(inputBox, "cmd", "cmd_pasteAndGo");
     }
   },
 
@@ -75,10 +78,10 @@ var PasteToTab = {
     var inputBox = document.getAnonymousElementByAttribute(
                             textBox, "anonid", "textbox-input-box");
     switch (Application.id) {
-      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
+      case this.FIREFOX_ID: // Firefox
         return document.getAnonymousElementByAttribute(
                                   inputBox, "anonid", "paste-and-search");
-      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
+      case this.SEAMONKEY_ID: // SeaMonkey
         return document.getAnonymousElementByAttribute(
                       inputBox, "cmd", "cmd_pasteAndSearch");
     }
@@ -87,10 +90,10 @@ var PasteToTab = {
   // Get and return tab context menu
   get tabContextMenu() {
     switch (Application.id) {
-      case "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}": // Firefox
+      case this.FIREFOX_ID: // Firefox
         return document.getElementById("tabContextMenu");
 
-      case "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}": // SeaMonkey
+      case this.SEAMONKEY_ID: // SeaMonkey
         var ptt = document.getElementById("paste-to-tab-and-go");
         var ptnt = document.getElementById("paste-to-new-tab-and-go");
         var sep = document.getElementById("paste-to-tab-and-go-separator");
@@ -215,8 +218,8 @@ var PasteToTab = {
 
     var backgroundTab;
     switch (this.prefs.getIntPref("focusTab")) {
-      case 0: backgroundTab = false; break;
-      case 1: backgroundTab = true; break;
+      case 0: backgroundTab = true; break;
+      case 1: backgroundTab = false; break;
       default: backgroundTab = null;
     }
 
@@ -306,8 +309,7 @@ var PasteToTab = {
       if (aEvent.target.id == "toolbar-context-menu") {
         node.hidden = !(prefOK && (popupNode.id == "tabbrowser-tabs"));
       }
-      if (Application.id == "{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}") {
-        // SeaMonkey
+      if (Application.id == this.SEAMONKEY_ID) { // SeaMonkey
         if (node.id == "paste-to-tab-and-go") {
           node.hidden = !(prefOK && popupNode.localName == "tab");
         }
@@ -322,10 +324,11 @@ var PasteToTab = {
 
   // Toggle 'Paste to Tab & Go' menuitem on tab context menu
   onTabContext: function pasteToTab_onTabContext(aEvent) {
-    this.toggleNode("paste-to-tab-and-go", "tab.pasteToThisTabAndGo", aEvent);
+    this.toggleNode("paste-to-tab-and-go", "tab.pasteToThisTabAndGo",
+                    Application.id == this.SEAMONKEY_ID ? aEvent : null);
     this.toggleNode("paste-to-new-tab-and-go", "tabbar.pasteToNewTabAndGo", aEvent);
     this.toggleNode("paste-to-tab-and-go-separator",
-                    "tab.pasteToThisTabAndGo" && "tabbar.pasteToNewTabAndGo");
+                    "tab.pasteToThisTabAndGo" || "tabbar.pasteToNewTabAndGo");
     this.debug("Tab: " + this.browser.mContextTab.label);
   },
 

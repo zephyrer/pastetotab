@@ -1,6 +1,10 @@
 /* Hide the template */
 #template-paste-to-new-tab-and-go,
 #template-paste-to-new-tab-and-search,
+/* Hide menuseparator */
+#paste-to-tab-and-go-separator:not([hidden]) + #paste-to-new-tab-and-go[hidden]
+                                             + #paste-to-tab-and-go[hidden]
+                                             + menuseparator,
 /* Don't display these menuitems on secondary browser window */
 #main-window:not([chromehidden=""]) #urlbar-paste-text-and-go,
 #main-window:not([chromehidden=""]) #urlbar-paste-to-new-tab-and-go {
